@@ -6,4 +6,4 @@ Purpose: to import diagnostic modules
 '''
 	
 if not __name__ == '__main__':	
-	print "diagnostic imported" 
+	print "diagnostic imported"
