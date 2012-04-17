@@ -113,4 +113,4 @@ def profile_module(path, module, **kwargs):
 	p = pstats.Stats('C:/temp/profile.txt')
 	p.sort_stats('cumulative').print_stats(10)
 
-print "AP_common.ap_diagnostics.decorators imported"
+print "common.diagnostics.decorators imported"
