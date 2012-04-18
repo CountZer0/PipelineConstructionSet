@@ -600,8 +600,9 @@ class PyDB:
                     threads = threadingEnumerate()
                     for t in threads:
                         if not t.getName().startswith('pydevd.'):
-                            #TODO: optimize so that we only actually add that tracing if it's in
+                            #TODoo: optimize so that we only actually add that tracing if it's in 
                             #the new breakpoint context.
+                            
                             additionalInfo = None
                             try:
                                 additionalInfo = t.additionalInfo

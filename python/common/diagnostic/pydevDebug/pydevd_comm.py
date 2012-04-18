@@ -304,7 +304,7 @@ class WriterThread(PyDBDaemonThread):
                 
                 if IS_PY3K:
                     out = bytearray(out, 'utf-8')
-                self.sock.send(out) #TODO: this does not guarantee that all message are sent (and jython does not have a send all)
+                self.sock.send(out) #TODoo: this does not guarantee that all message are sent (and jython does not have a send all)
                 if time is None:
                     break #interpreter shutdown
                 time.sleep(self.timeout)                
