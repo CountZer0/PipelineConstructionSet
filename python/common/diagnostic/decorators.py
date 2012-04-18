@@ -1,6 +1,6 @@
 '''
 Author: Jason.Parks
-Created: April 17, 2012
+Created: Apr 17, 2012
 Module: common.diagnostic.decorators
 Purpose: some convenient decorators
 '''
@@ -64,7 +64,6 @@ def profileit(printlines=1):
 		return _func
 	return _my
 
-
 class myDecorator(object):
 
 	def __init__(self, f):
@@ -73,7 +72,6 @@ class myDecorator(object):
 
 	def __call__(self):
 		print "inside myDecorator.__call__()"
-
 
 class entryExit(object):
 
@@ -91,12 +89,11 @@ class proTest(object):
 		
 	def __call__(self, **kwargs):
 		
-		#profile.run('soe_rigging.%s(%s)' % (self.f, kwargs), 'C:/temp/profile.txt')
+		#profile.run('ap_rigging.%s(%s)' % (self.f, kwargs), 'C:/temp/profile.txt')
 		profile.run('%s(%s)' % (self.f, kwargs), 'C:/temp/profile.txt')
 		import pstats
 		p = pstats.Stats('C:/temp/profile.txt')
 		p.sort_stats('cumulative').print_stats(10)
-
 
 class myProf(object):
 
@@ -109,7 +106,6 @@ class myProf(object):
 		import pstats
 		p = pstats.Stats('C:/temp/profile.txt')
 		p.sort_stats('time').print_stats(10)
-		
 		
 def profile_module(path, module, **kwargs):
 	profile.run('%s.%s(%s)' % (path, module, kwargs), 'C:/temp/profile.txt')
