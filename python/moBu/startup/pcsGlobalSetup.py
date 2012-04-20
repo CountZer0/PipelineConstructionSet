@@ -15,7 +15,7 @@ import xml.etree.ElementTree as ET #@UnresolvedImport
 import inspect #@UnresolvedImport
 
 
-PCSglobal = "/Users/jason/remotePCS/PCSglobal"	#Must match networkLoc path in gVarInit
+PCSglobal = "/Users/jason/remotePCS/ArtMonkey"	#Must match networkLoc path in gVarInit
 
 #--------------------------------------------
 # get user's main main Project tool path
