@@ -59,7 +59,7 @@ class PipelineBuild(object):
 		#TODO: run unitTself.pipeBuildself.pipeBuildself.pipeBuildests
 
 #		# hack gVarInit
-#		self.swapGVarInit(direction='OF3D')
+#		self.swapGVarInit(direction='REMOTE')
 #		
 #		#TODO: Compile APE
 #		self.compileAPE()
