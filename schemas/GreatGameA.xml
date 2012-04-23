@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GreatGameA Lookup -->
+<!-- Keys: 
+    charRoot = Root folder for character
+    charType = pc, npc, pet, mount, wield etc
+    charRace = human, elf, pig etc
+    charContent = mesh, texture, animation
+    charOrigin = source, export
+    charGender = male, female
+    charAssetClass = weights, body, heads, skeleton etc (specified)
+	charPurposeClass = rig, animation etc
+	charVariant = Variations of characters...ranks, etc
+	charWear = wearables - not implemented
+	-->
+<!-- Export Keys (.mod): 
+    mirrored:replaceThis:withThis
+    1 - one directory structure up
+	-->
+<GreatGameA>
+	<Core 
+		artRoot="'X:/GreatGameA/Art/'"
+		animationsRoot= "'%s%s' % (eval(self.coreList.get('artRoot')), 'Animations/')" 
+		runTimeRoot = "'X:/GreatGameA/Main/Runtime/Client/'"
+		>
+	</Core>
+	<Character 
+		root="'%s%s' % (eval(self.coreList.get('artRoot')), 'Assets/Characters/')"
+		BodyRigFolderKey="charType:charRace:~Models:~source:"
+		>
+	</Character>
+
+	
+	<Environment 
+		root="'%s%s' % (eval(self.coreList.get('artRoot')), 'Environments/')"
+		>
+	</Environment>
+	
+	<Vehicle 
+		root="'%s%s' % (eval(self.coreList.get('artRoot')), 'Vehicles/')"
+		>
+	</Vehicle>
+		
+	<Export 
+		exportKey="1"
+		runTimeArtRoot="'%s%s' % (eval(self.coreList.get('runTimeRoot')), 'art/')"
+		udkVersion="001">
+	</Export>
+		
+	<AssetHubUi 
+		uiTabs = "['Environment', 'Character', 'Vehicles']"
+		>
+	</AssetHubUi>
+	
+	<Areas
+		Stadium="['stadium']">
+	</Areas>
+	
+	<Maya
+		artRoot="eval(self.coreList.get('artRoot'))"
+		characterRoot="eval(self.characterList.get('root'))"
+		environmentRoot="eval(self.environmentList.get('root'))"
+		object = "'%s%s' % (eval(self.environmentList.get('root')), 'object/stadium/')"
+		>
+	</Maya>
+	   
+	<MoBu
+		artRoot="eval(self.coreList.get('artRoot'))"
+		animationsRoot="eval(self.coreList.get('animationsRoot'))"
+		sourceCharacterRoot="eval(self.characterList.get('root'))"
+		sourceRetargetCharacters="'%s%s' % (eval(self.characterList.get('root')),'ForRetargeting')"
+		targetCharacter="'%s%s' % (eval(self.coreList.get('animationsRoot')),'Models/Characters')"
+		targetCharacterNode="mainChar"
+		retargetProcessing="'%s%s' % (eval(self.coreList.get('animationsRoot')),'ProcessArea/Retargeting')"
+		importModels="'%s%s' % (eval(self.coreList.get('animationsRoot')),'Models/')"
+		>
+	</MoBu>    
+	
+	<Rigging>
+		
+		<!-- MotionBuilder skeleton node names -->
+		<node name="moBuRoot" value="Reference" />
+		<node name="moBuHips" value="Hips" />
+		<node name="moBuSpine" value="Spine" />
+		
+		<!-- misc -->
+		<setting name="gripScale" value=".001" />	
+		
+		<!-- groups -->
+		<node name="rootChild_" value="rootChild_grp" />
+		<node name="cogOffset_" value="COG_anmOffset_grp" />
+		<node name="cogGimbal_" value="COG_gimbal" />
+		<node name="leftEye_" value="L_eye_grp" />
+		<node name="rightEye_" value="R_eye_grp" />
+		<node name="allControls" value="allControls" />
+	
+		<!-- grips -->	
+		<node name="moveAllGrip" value="moveAll_anm" />
+		<node name="widgetGrip" value="widgetToggle" />
+		<node name="cogTurnGrip" value="COGTurn_anm" />
+		<node name="cogGrip" value="COG_anm" />
+		<node name="faceGrip" value="riggerFace" />
+		<node name="eyesGrip" value="eyesLookAt" />
+		
+		<!-- joints -->
+		<node name="rootJoint" value="root">test</node>
+		<node name="cogJoint" value="COG" />
+		<node name="spineBottomJoint" value="spineLower" />
+		<node name="spineMiddleJoint" value="spineMiddle" />
+		<node name="spineTopJoint" value="spineUpper" />
+		
+		<node name="neckJoint" value="neck" />
+		<node name="neckStartJoint" value="neckA" />
+		<node name="headJoint" value="head" />
+		
+		<node name="leftClavicle" value="L_clavicle" />
+		<node name="leftShoulder" value="L_shoulder" />
+		<node name="leftBicep" value="L_shoulderRoll" />
+		<node name="leftElbow" value="L_elbow" />
+		<node name="leftForearm" value="L_forearm" />
+		<node name="leftHand" value="L_wrist" />
+		
+		<node name="rightClavicle" value="R_clavicle" />
+		<node name="rightShoulder" value="R_shoulder" />
+		<node name="rightBicep" value="R_shoulderRoll" />
+		<node name="rightElbow" value="R_elbow" />
+		<node name="rightForearm" value="R_forearm" />
+		<node name="rightHand" value="R_wrist" />
+		
+		<node name="leftHip" value="L_hip" />
+		<node name="leftThigh" value="L_hipRoll" />
+		<node name="leftKnee" value="L_knee" />
+		<node name="leftAnkle" value="L_ankle" />
+		<node name="leftBall" value="L_ball" />
+		<node name="leftToe" value="L_toe_End" />
+		
+		<node name="rightHip" value="R_hip" />
+		<node name="rightThigh" value="R_hipRoll" />
+		<node name="rightKnee" value="R_knee" />
+		<node name="rightAnkle" value="R_ankle" />
+		<node name="rightBall" value="R_ball" />
+		<node name="rightToe" value="R_toe_End" />
+		
+		<!-- locators -->
+		<node name="leftInverseKneeLoc" value="L_invKnee_" />
+		<node name="leftHeelLoc" value="L_heel_" />
+		<node name="leftBallLoc" value="L_ball_" />
+		<node name="leftToeLoc" value="L_toe_" />
+		
+		<node name="rightInverseKneeLoc" value="R_invKnee_" />
+		<node name="rightHeelLoc" value="R_heel_" />
+		<node name="rightBallLoc" value="R_ball_" />
+		<node name="rightToeLoc" value="R_toe_" />
+		
+		<node name="eyesLookAtLoc" value="eyesLookAt_" />
+		<node name="cogLoc" value="cog_" />
+		
+		<!-- allControls -->
+		<node name="potentialRigControls" value="['riggerFace', 'L_hand_anm', 'R_hand_anm', 'COG_anm', 'L_foot', 'R_foot', 'L_hand', 'R_hand', 'root', 'rootOffset_grp', 'Master', 'ROOT_BONE', 'R_clavicle', 'pelvis', 'L_hip', 'L_knee', 'L_ankle', 'L_ball', 'R_hip', 'R_knee', 'R_ankle', 'R_ball', 'head_anm', 'L_shoulder_anm', 'L_elbow_anm', 'L_wrist_anm', 'R_shoulder_anm', 'R_elbow_anm', 'R_wrist_anm', 'spineUpper', 'spineLower', 'neck', 'L_clavicle', 'COG_anmOffset_grp', 'R_footOffset_grp', 'L_footOffset_grp']" />
+
+		<node name="potentialLegControls" value="['L_hip', 'L_knee', 'L_ankle', 'L_ball', 'L_toe', 'R_hip', 'R_knee', 'R_ankle', 'R_ball', 'R_toe', 'COG', 'pelvis', 'R_weapon', 'L_weapon', 'base', 'tip']" />
+		
+		<node name="potentialTorsoArmsControls" value="['spineLower', 'spineUpper', 'neck', 'head', 'L_clavicle', 'L_shoulder', 'L_elbow', 'L_forearm', 'L_wrist', 'R_clavicle', 'R_shoulder', 'R_elbow', 'R_forearm', 'R_wrist']" />
+		
+		<node name="potentialFaceControls" value="['L_brow', 'R_brow', 'L_eye', 'R_eye', 'L_eyeLid', 'R_eyeLid', 'nose', 'lipUpper', 'L_lipCorner', 'R_lipCorner', 'jaw', 'lipLower']" />
+		
+		<node name="potentialFingerControls" value="['L_thumbA', 'L_thumbB', 'L_indexA', 'L_indexB', 'L_flipperA', 'L_flipperB', 'R_thumbA', 'R_thumbB', 'R_indexA', 'R_indexB', 'R_flipperA', 'F_flipperB']" />
+		
+	</Rigging>
+	
+</GreatGameA>
