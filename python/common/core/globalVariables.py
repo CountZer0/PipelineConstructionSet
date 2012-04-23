@@ -1,3 +1,2 @@
-teamA = 'GreatGameA'teamB = 'GreatGameB'teamC = 'GreatGameC'teamD = 'GreatGameD'
-#remoteLoc = '//networkDrive/artMonkey'#remoteLoc = 'C:/APremote/'remoteLoc = '/Users/jason/remotePCS/ArtMonkey'
+# Location of ToolstoolsLocation = 'C:/Users/jason/git/PipelineConstructionSet'# NOTE!: It is necessary to manually add the above location# + /python to the PYTHONPATH environment variable on all# machines which want to use Pipeline Construction set# ex.-# PYTHONPATH = 'C:/Users/jason/git/PipelineConstructionSet/python'# schemaLocation should probably be in a shared folder on the network# so all users can get updates the T.A. makes to this fileschemaLocation = '/Users/jason/remotePCS/pcsSchema.xml'teamA = 'GreatGameA'teamB = 'GreatGameB'teamC = 'GreatGameC'teamD = 'GreatGameD'
 emergency = 0
