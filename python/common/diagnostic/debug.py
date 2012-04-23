@@ -1,12 +1,12 @@
 '''
 Author: Jason.Parks
 Created: Apr 12, 2012
-Module: common.diagnostics.debug
+Module: common.diagnostic.debug
 Purpose: to import debug methods
 '''
 
-from diagnostic import wingdbstub
-from diagnostic.pcsLogger import logger
+from common.diagnostic import wingdbstub
+from common.diagnostic.pcsLogger import logger
 
 class Debug(object):
 	'''
@@ -48,7 +48,7 @@ class Debug(object):
 		 
 		RETURNS: Nothing 
 		"""
-		from diagnostic.pydevDebug import pydevd
+		from common.diagnostic.pydevDebug import pydevd
 		try:
 			pydevd.settrace(host=host, stdoutToServer=True, stderrToServer=False, suspend=False)
 			print 'Connected to Eclipse'

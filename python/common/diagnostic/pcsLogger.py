@@ -4,7 +4,7 @@ Created: Apr 15, 2012
 Module: common.diagnostics.pcsLogger
 '''
 
-from core import gVarInit
+from common.core import globalVariables as gv
 import exceptions
 import getpass
 import logging.handlers
@@ -23,9 +23,9 @@ toAddresses = [gameArtPipelineEmail]
 
 #artTeam = parser_pcs.ParseSomething().userGet('myCompanyActiveTeam')
 artTeam = 'GreatGameA'
-if artTeam == gVarInit.teamA:
+if artTeam == gv.teamA:
 	toAddresses = [gameArtPipelineEmail, teamATechArtistEmail]
-if artTeam == gVarInit.teamB:
+if artTeam == gv.teamB:
 	toAddresses = [gameArtPipelineEmail, teamBTechArtistEmail]
 	
 CRITICAL = 50
@@ -155,7 +155,7 @@ class PCSlogging(logging.Logger):
 			finally:
 				print "Not in Maya or MoBu?"
 		
-def pcs_logger(filePathName='%s/data/%s/%s.log' % (gVarInit.remoteLoc, getpass.getuser(), getpass.getuser()), logger='', name='pcs_logger', fresh=0):
+def pcs_logger(filePathName='%s/data/%s/%s.log' % (gv.schemaLocation, getpass.getuser(), getpass.getuser()), logger='', name='pcs_logger', fresh=0):
 	"""		
 	SYNOPSIS: Creates nice logger. Will nuke FileHandler logger of similar
 				type if filePathName is different from existing loggers
@@ -201,7 +201,7 @@ def pcs_logger(filePathName='%s/data/%s/%s.log' % (gVarInit.remoteLoc, getpass.g
 	makeNewSMTPHandler = 1
 	smtpHandlerFound = 0
 	if len(logger.handlers):
-		for hndlr in mpcs(lambda x: x, logger.handlers):
+		for hndlr in map(lambda x: x, logger.handlers):
 			if hndlr.__class__ == logging.FileHandler:
 				if not hndlr.stream.closed:
 					if hndlr.stream.name == filePathName:
@@ -266,4 +266,4 @@ moBuLogger = addMoBuHandler(pcs_logger(name='pcs_mobu_logger'))
 if __name__ == '__main__':
 	print 'run from Maya session'
 else:
-	print "common.diagnostics.pcsLogger imported" 
+	print "common.diagnostic.pcsLogger imported" 
