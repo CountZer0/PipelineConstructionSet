@@ -17,7 +17,7 @@ import common.core.globalVariables as gv
 
 #--------------------------------------------
 # get extra relative paths to add for MotionBuilder
-pcsXML = ET.parse(gv.schemaLocation)
+pcsXML = ET.parse('%s/pcsSchema.xml' % gv.schemaLocation)
 pcsXMLcore = pcsXML.getiterator('Core')[0]
 mobuRelPaths = eval(pcsXMLcore.get('MoBuPaths'))
 
