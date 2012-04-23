@@ -5,7 +5,7 @@ Module: common.fileIO.Path
 Purpose: custom Path class wrapper
 '''
 
-from fileIO.path import *
+from common.fileIO.path import *
 import os, stat
 import sys
 
