@@ -11,10 +11,14 @@ import re #@UnresolvedImport
 import sys
 import xml.etree.ElementTree as ET #@UnresolvedImport
 import inspect #@UnresolvedImport
+from pyfbsdk import FBMessageBox #@UnresolvedImport
 
 # assumes system/user PYTHONPATH contains path to ./PipelineConstructionSet/python
-import common.core.globalVariables as gv
-
+try:
+	import common.core.globalVariables as gv
+except:
+	FBMessageBox("PYTHONPATH setup", "Please add system variable PYTHONPATH to\nlocation of ./PipelineConstructionSet/python", "OK", None, None, 1)
+	
 #--------------------------------------------
 # get extra relative paths to add for MotionBuilder
 pcsXML = ET.parse('%s/pcsSchema.xml' % gv.schemaLocation)
@@ -28,6 +32,14 @@ if platform.architecture()[0] == '64bit': bit = 'win64'
 
 #--------------------------------------------
 # add to sys.path
+
+# common first
+sys.path.append('%s/python/common' % gv.toolsLocation)
+
+# moBu root
+sys.path.append('%s/python/moBu' % gv.toolsLocation)
+
+# now MoBu-specific
 for mobuRelPath in mobuRelPaths:
 	
 	# add correct bit sub-folder
@@ -37,7 +49,7 @@ for mobuRelPath in mobuRelPaths:
 	# add correct bit sub-folder
 	if re.search('PIL', mobuRelPath):
 		mobuRelPath = '%s/%s' % (mobuRelPath, bit)
-	
+
 	# add paths from userXML toolpath
 	sys.path.append('%s/python/moBu/%s' % (gv.toolsLocation, mobuRelPath))
 
