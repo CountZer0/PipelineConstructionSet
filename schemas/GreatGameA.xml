@@ -71,7 +71,7 @@
 		targetCharacter="'%s%s' % (eval(self.coreList.get('animationsRoot')),'Models/Characters')"
 		targetCharacterNode="mainChar"
 		retargetProcessing="'%s%s' % (eval(self.coreList.get('animationsRoot')),'ProcessArea/Retargeting')"
-		importModels="'%s%s' % (eval(self.coreList.get('animationsRoot')),'Models/')"
+		FBXmodels="'%s%s' % (eval(self.coreList.get('animationsRoot')),'Models/')"
 		>
 	</MoBu>    
 	
