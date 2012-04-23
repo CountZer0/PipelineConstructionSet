@@ -4,9 +4,7 @@ Created: Apr 15, 2012
 Module: startup.pcsGlobalSetup
 Purpose: Adds paths to Mobu env
 '''
-
-
-import getpass #@UnresolvedImport
+#import getpass #@UnresolvedImport
 import os
 import platform #@UnresolvedImport
 import re #@UnresolvedImport
@@ -14,20 +12,14 @@ import sys
 import xml.etree.ElementTree as ET #@UnresolvedImport
 import inspect #@UnresolvedImport
 
-
-PCSglobal = "/Users/jason/remotePCS/ArtMonkey"	#Must match networkLoc path in gVarInit
-
-#--------------------------------------------
-# get user's main main Project tool path
-userXML = ET.parse("%s/data/%s/PCSuser.xml" % (PCSglobal, getpass.getuser()))
-userXMLcore = userXML.getiterator('Core')[0]
-userToolRoot = userXMLcore.get('PCSprojectToolPath')
+# assumes system/user PYTHONPATH contains path to ./PipelineConstructionSet/python
+import common.core.globalVariables as gv
 
 #--------------------------------------------
 # get extra relative paths to add for MotionBuilder
-globalXML = ET.parse("%s/installData/PCSstudio.xml" % PCSglobal)
-globalXMLcore = globalXML.getiterator('Core')[0]
-mobuRelPaths = eval(globalXMLcore.get('MoBuPaths'))
+pcsXML = ET.parse(gv.schemaLocation)
+pcsXMLcore = pcsXML.getiterator('Core')[0]
+mobuRelPaths = eval(pcsXMLcore.get('MoBuPaths'))
 
 #--------------------------------------------
 # get bitVersion
@@ -47,18 +39,17 @@ for mobuRelPath in mobuRelPaths:
 		mobuRelPath = '%s/%s' % (mobuRelPath, bit)
 	
 	# add paths from userXML toolpath
-	sys.path.append('%s/%s' % (userToolRoot, mobuRelPath))
+	sys.path.append('%s/python/moBu/%s' % (gv.toolsLocation, mobuRelPath))
 
 #--------------------------------------------
 # start debugging
-import diagnostic.wingdbstub #@UnusedImport
-
-from diagnostic.pcsLogger import moBuLogger
+import common.diagnostic.wingdbstub #@UnusedImport
 
 #--------------------------------------------
+from common.diagnostic.pcsLogger import moBuLogger
 # do main import loop
 try:
-	from moBu.sysGlobalMenu import MobuArtMonkeyMenu
+	from moBu.core.sysGlobalMenu import MobuArtMonkeyMenu
 except:
 	moBuLogger.info(sys.exc_info())
 	moBuLogger.errorDialog("Failed to import moBu and start ArtMonkey")
