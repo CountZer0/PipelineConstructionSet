@@ -5,17 +5,17 @@ Module: common.build.buildPipeline
 Purpose: builds and pushes Toolchain to network
 '''
 
-from core.gVarInit import remoteLoc
+from common.core import globalVariables as gv
 import sys
 
 # test gVarInit has been changed back
-if not remoteLoc[:6] == '/Users':
+if not gv.toolsLocation[:6] == '/Users':
 	print "Forgot to set gVarInit back"
 	sys.exit()
 	
-from diagnostic.pcsLogger import logger
-from fileIO.pcsPath import Path
-from perforce import pcsP4
+from common.diagnostic.pcsLogger import logger
+from common.fileIO.pcsPath import Path
+from common.perforce import pcsP4
 import compileall
 import os
 import shutil
@@ -38,11 +38,11 @@ class PipelineBuild(object):
 		'''
 		super(PipelineBuild, self).__init__()
 		self.p4 = pcsP4.P4Lib(maya=0)
-		self.networkLoc = remoteLoc
+		self.networkLoc = gv.toolsLocation
 		
 		# create in location on network
 		self.remoteBuild = remoteBuild
-		self.buildDest = Path(remoteLoc).parent + '/AMremoteBuild/ArtMonkey'
+		self.buildDest = Path(gv.toolsLocation).parent + '/AMremoteBuild/ArtMonkey'
 		
 		
 	def buildPCSPipeline(self, compileInstaller=False, pyc=True, removePY=True, removePYC=True):
@@ -246,7 +246,7 @@ class PipelineBuild(object):
 		
 		return Path(sourceLoc)
 	
-	def pushToNetwork(self, networkLoc=remoteLoc, remote=True):
+	def pushToNetwork(self, networkLoc=gv.toolsLocation, remote=True):
 		''' copies all files from depot to desired
 			network test location
 			Params:

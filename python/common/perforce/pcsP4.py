@@ -5,9 +5,9 @@ Module: common.perforce.pcsP4
 Purpose: perforce methods
 '''
 
-from core import gVarInit
-from diagnostic.pcsLogger import logger
-from fileIO import pcsPath
+from common.core import globalVariables as gv
+from common.diagnostic.pcsLogger import logger
+from common.fileIO import pcsPath
 from getpass import getuser
 from os import path #@UnusedImport
 import getpass #@UnusedImport
@@ -31,12 +31,12 @@ class P4Lib(object):
 		"""	
 
 		# Parse User XML
-		userXML = ET.parse("%s/data/%s/PCSuser.xml" % (gVarInit.remoteLoc, getpass.getuser()))
+		userXML = ET.parse("%s/data/%s/PCSuser.xml" % (gv.toolsLocation, getpass.getuser()))
 		self.userXMLcore = userXML.getiterator('Core')[0]
 		p4Mode = self.userXMLcore.get('P4_Mode')
 		
 		# Parse Team XML
-		globalXML = ET.parse("%s/installData/PCSstudio.xml" % gVarInit.remoteLoc)
+		globalXML = ET.parse("%s/installData/PCSstudio.xml" % gv.toolsLocation)
 		self.globalXMLcore = globalXML.getiterator(self.userXMLcore.get('PCSactiveTeam'))[0]
 			
 		self.maya = maya
