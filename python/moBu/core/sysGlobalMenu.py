@@ -7,10 +7,8 @@ Purpose: start main MoBu menu
 	
 from pyfbsdk import *
 from common.core import globalVariables as gv
-#import common.core.globalVariables as gv
 from common.diagnostic.pcsLogger import moBuLogger
 from common.fileIO.pcsPath import Path
-#from fileIO.parser_PCS import ParsePCS #@UnresolvedImport
 from moBu.core.moBuCore import mbCore
 import datetime
 import fnmatch
@@ -35,15 +33,15 @@ elif mbCore.mobuVer == 2012:
 else:
 	moBuLogger.error("Failed to find proper MoBu version: '%s'" % mbCore.mobuVer)
 
-class MobuArtMonkeyMenu(object):
+class MoBuToolsMenu(object):
 	'''
 	Super class of MotionBuilder Tool Delivery Menu. 
 	Methods to manage the delivery system.
 	'''
 
 	def __init__(self):
-		""" MobuArtMonkeyMenu.__init__():  set initial parameters """
-		super(MobuArtMonkeyMenu, self).__init__()
+		""" MoBuToolsMenu.__init__():  set initial parameters """
+		super(MoBuToolsMenu, self).__init__()
 		
 		# Set who is running for metrics
 		self.userName = getpass.getuser()
@@ -253,7 +251,7 @@ def KFileCallbackMenu(control, event):
 def KToolsCallbackMenu(control, event):
 	# check for documentation hack
 	if event.Name == "Documentation":
-		MobuArtMonkeyMenu().openToolDocs(control, event)
+		MoBuToolsMenu().openToolDocs(control, event)
 
 def KToolsCallbackSubMenu(control, event):
 	# import module
@@ -291,7 +289,7 @@ menu = menuMgr.GetMenu("ArtMonkey")
 docMenuItem = menu.InsertFirst("Documentation", 0)
 menu.OnMenuActivate.Add(KToolsCallbackMenu)
 
-menuDict, ext = MobuArtMonkeyMenu().getMenuDic()
+menuDict, ext = MoBuToolsMenu().getMenuDic()
 
 # 2. Sorted Keys list
 sKeys = []
@@ -320,7 +318,7 @@ for menuNamePath in sKeys:
 
 	
 if __name__ == "__builtin__":
-#	MobuArtMonkeyMenu().createTool()
+#	MoBuToolsMenu().createTool()
 	pass
 else:
 	print "moBu.pcsGlobalMenu imported"

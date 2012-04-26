@@ -61,7 +61,7 @@ import common.diagnostic.wingdbstub #@UnusedImport
 from common.diagnostic.pcsLogger import moBuLogger
 # do main import loop
 try:
-	from moBu.core.sysGlobalMenu import MobuArtMonkeyMenu
+	from moBu.core.sysGlobalMenu import MoBuToolsMenu
 except:
 	moBuLogger.info(sys.exc_info())
 	moBuLogger.errorDialog("Failed to import moBu and start ArtMonkey")
@@ -71,7 +71,7 @@ except:
 #--------------------------------------------
 # start ArtMonkey Global menu
 try:
-	MobuArtMonkeyMenu().createTool()
+	MoBuToolsMenu().createTool()
 except:
 	moBuLogger.error("Failed to create Art Monkey menu")
 
