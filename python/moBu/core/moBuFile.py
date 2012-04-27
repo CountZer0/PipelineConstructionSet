@@ -9,8 +9,8 @@ from common.core import globalVariables as gv
 from common.diagnostic.pcsLogger import moBuLogger
 from common.fileIO.parser_schema import ParseSchema
 from common.fileIO.pcsPath import Path
-from core.moBuCore import MoBuCore #@UnresolvedImport
-import P4 #@UnresolvedImport
+from moBu.core.moBuCore import MoBuCore #@UnresolvedImport
+#import P4
 import getpass
 import os
 import re
@@ -140,7 +140,7 @@ class MoBuFile(MoBuCore):
 				return False
 		
 		#3. Save to network location
-		savePath = Path('%s/data/%s/fixThis' % (gv.toolsLocation, getpass.getuser()))
+		savePath = Path('%s/data/%s/fixThis' % (gv.schemaLocation, getpass.getuser()))
 		saveFilePath = '%s/%s' % (savePath, currentScene.basename())
 #		saveFilePath = '%s/data/%s/fixThis/%s' % (gVarInit.remoteLoc, getpass.getuser(), currentScene.basename())
 		
@@ -338,7 +338,8 @@ class MoBuFile(MoBuCore):
 				if self.p4.isP4Connected:
 					try:
 						self.p4.p4CheckOut(desc=text)
-					except P4.P4Exception:
+#					except P4.P4Exception:
+					except:
 						moBuLogger.warning("Failed to checkout: '%s'" % pathFile)
 			else:
 				if not quiet:
@@ -354,7 +355,7 @@ class MoBuFile(MoBuCore):
 		currentTakeObject = FBSystem().CurrentTake
 		if self.mobuVer == 2010:	
 			lMgr = FBFbxManager() #@UndefinedVariable
-			lMgr.SaveBegin(pathFile)
+			lMgr.SaveBegin(str(pathFile))
 			lMgr.Selected = True
 			for strEach in lMgr.Takes:
 				if strEach.Name != currentTakeObject.Name:
@@ -384,15 +385,15 @@ class MoBuFile(MoBuCore):
 				res = os.path.exists(str(pathFile))
 				if res:
 					if not quiet:
-						moBuLogger.info("%s, '%s'" % (text, pathFile))
+						moBuLogger.info("%s, '%s'" % (text, str(pathFile)))
 					return True
 				else:
-					moBuLogger.errorDialog("Failed to save '%s'" % pathFile)
+					moBuLogger.errorDialog("Failed to save '%s'" % str(pathFile))
 					return False	
 			else:
 				#TODO: check to see if different?
 				if not quiet:
-					moBuLogger.info("%s, '%s'" % (text, pathFile))
+					moBuLogger.info("%s, '%s'" % (text, str(pathFile)))
 				return True
 			
 mbFile = MoBuFile()
