@@ -28,7 +28,7 @@ if mbCore.mobuVer == 2010:
 	from pyfbsdk_additions import HBoxLayout as FBHBoxLayout #@UnusedImport @UnresolvedImport
 	from pyfbsdk_additions import TabControl as FBTabControl #@UnusedImport @UnresolvedImport
 	from pyfbsdk_additions import GridLayout as FBGridLayout #@UnusedImport @UnresolvedImport
-elif mbCore.mobuVer == 2012:
+elif mbCore.mobuVer == 2012 or mbCore.mobuVer == 2013:
 	from pyfbsdk_additions import FBCreateUniqueTool, FBHBoxLayout, FBTabControl, FBGridLayout #@Reimport @UnresolvedImport @UnusedImport
 else:
 	moBuLogger.error("Failed to find proper MoBu version: '%s'" % mbCore.mobuVer)
