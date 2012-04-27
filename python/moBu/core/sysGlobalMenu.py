@@ -51,7 +51,7 @@ class MoBuToolsMenu(object):
 		
 		self.pcsImagePath = '%s/moBu/icons' % gv.toolsLocation
 		
-		#TODO: Have buildPipeline generate number into gVarInit
+		#TODO: Have buildPipeline generate number into globalVariables
 		self.buildNumber = gv.build
 
 	
@@ -71,7 +71,7 @@ class MoBuToolsMenu(object):
 		
 		# Add tools procedurally from ../mobuMenu
 		self.mobuMenuPath = '%s/python/moBu/menu/' % gv.toolsLocation
-		if not self.mobuMenuPath[:2] == 'X:':
+		if self.mobuMenuPath[:2] == '//':
 			# network, look for .pyc
 			ext = '.pyc'
 		for root, unused, unused in os.walk(os.path.abspath(self.mobuMenuPath)):
@@ -177,7 +177,7 @@ class MoBuToolsMenu(object):
 			
 			menuName = str(Path(menu).basename())
 			# skip root and 'old'
-			if not menuName == 'old' and not menuName == 'mobuMenu':
+			if not menuName == 'old' and not menuName == 'menu':
 				lyt = FBHBoxLayout()
 				lyt.default_space = 5
 				lyt.SetRegionTitle("My Title", "Title")
@@ -225,7 +225,6 @@ class MoBuToolsMenu(object):
 		writeArr.append('Running From: %s' % gv.toolsLocation)
 		writeArr.append('Mobu Version: %s %s' % (mbCore.moBuVersion(), mbCore.moBuBitVersion()))
 		
-#		_file = open('%s/data/%s/%s.PCS' % (self.PCSremoteTBLoc, self.userName, self.userName), "w")
 		_file = open('%s/data/%s/%s.PCS' % (gv.schemaLocation, self.userName, self.userName), "w")
 		for l in writeArr:
 			l = l.strip()
