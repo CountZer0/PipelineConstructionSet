@@ -1,7 +1,10 @@
 # Project #
 ###########
-.project
-.pydevproject
+*.project
+
+*.pydevproject
+*.wpr
+*.wpu
 
 
 # Compiled source #
