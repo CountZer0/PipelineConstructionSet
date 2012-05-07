@@ -6,8 +6,6 @@ Purpose: Adds paths to Mobu env
 '''
 #import getpass #@UnresolvedImport
 import os
-import platform #@UnresolvedImport
-import re #@UnresolvedImport
 import sys
 import xml.etree.ElementTree as ET #@UnresolvedImport
 import inspect #@UnresolvedImport
@@ -35,25 +33,9 @@ else:
 		FBMessageBox("Performing Maintenance", "Sorry, ArtMonkey is temporarily down for maintenance.\n\nShould be back up within the hour.", "OK", "Darn", "That Sucks", 1, False)
 	else:
 		#--------------------------------------------
-		# get extra relative paths to add for MotionBuilder
+		# read from schema
 		pcsXML = ET.parse('%s/pcsSchema.xml' % gv.schemaLocation)
 		pcsXMLcore = pcsXML.getiterator('Core')[0]
-		mobuRelPaths = eval(pcsXMLcore.get('moBuPaths'))
-		
-		#--------------------------------------------
-		# get bitVersion
-		bit = 'win32'
-		if platform.architecture()[0] == '64bit': bit = 'win64'
-		
-		# now MoBu-specific
-		for mobuRelPath in mobuRelPaths:
-			
-			# add correct bit sub-folder
-			if re.search('perforce', mobuRelPath) or re.search('PIL', mobuRelPath):
-				mobuRelPath = '%s/%s' % (mobuRelPath, bit)
-		
-			# add paths from userXML toolpath
-			sys.path.append('%s/python/moBu/%s' % (gv.toolsLocation, mobuRelPath))
 		
 		#--------------------------------------------
 		# add PyMoBu path
