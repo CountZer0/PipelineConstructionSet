@@ -30,15 +30,6 @@ mobuRelPaths = eval(pcsXMLcore.get('MoBuPaths'))
 bit = 'win32'
 if platform.architecture()[0] == '64bit': bit = 'win64'
 
-#--------------------------------------------
-# add to sys.path
-
-## common first
-#sys.path.append('%s/python/common' % gv.toolsLocation)
-#
-## moBu root
-#sys.path.append('%s/python/moBu' % gv.toolsLocation)
-
 # now MoBu-specific
 for mobuRelPath in mobuRelPaths:
 	
