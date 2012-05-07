@@ -6,7 +6,7 @@
 	updates by the T.A.
 	
 	Remove 'Sample' from the end of this file and rename
-	pcsSchemal.xml. and place on the network.
+	pcsSchema.xml. and place on the network.
 	Be sure to update this file:
 	./python/common/core/globalVariables.py
 
@@ -25,8 +25,9 @@
 		teams="['teamA', 'teamB', 'teamC', 'teamD']"
 		devs = "['devA', 'devB']"
 		PCSprojectName = "ArtMonkey"
-		MoBuPaths = "[ 'menu', 'site-packages/PyMoBu-0.1']"
+		moBuPaths = "[ 'hardCodedPackagePaths']"
 		pyMelVer = "{'2011': 'pymel-1.0.2', '2012': 'pymel-1.0.3'}"
+		pyMoBuVer = "{'2012': 'PyMoBu-0.1', '2013': 'PyMoBu-0.2'}"
 		pyMelRoot = "python/maya/site-packages"
 		pyQtVer = "{'2011': '2011', '2012': '2012'}"
 		pyQtRoot = "python/common/pyQt/PyQt4"

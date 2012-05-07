@@ -65,7 +65,7 @@ class MoBuFile(MoBuCore):
 			moBuLogger.warning("FBFbxOptions are not valid for 2010")
 			return None
 		
-		elif self.mobuVer == 2012:
+		elif self.mobuVer == 2012 or self.mobuVer == 2013:
 			# create object
 			pFbxOptions = FBFbxOptions(pLoad)
 			
@@ -141,8 +141,7 @@ class MoBuFile(MoBuCore):
 		
 		#3. Save to network location
 		savePath = Path('%s/data/%s/fixThis' % (gv.schemaLocation, getpass.getuser()))
-		saveFilePath = '%s/%s' % (savePath, currentScene.basename())
-#		saveFilePath = '%s/data/%s/fixThis/%s' % (gVarInit.remoteLoc, getpass.getuser(), currentScene.basename())
+		saveFilePath = '%s/%s' % (savePath, Path(currentScene).basename())
 		
 		# make dir
 		if not os.path.exists(savePath):
@@ -372,7 +371,7 @@ class MoBuFile(MoBuCore):
 				moBuLogger.errorDialog('There is a problem saving the file', 'Cannot Save')
 			
 		# 2012 save process
-		elif self.mobuVer == 2012:
+		elif self.mobuVer == 2012 or self.mobuVer == 2013:
 			alreadyExists = False
 			if Path(pathFile).exists():
 				alreadyExists = True
