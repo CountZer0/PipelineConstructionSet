@@ -20,7 +20,7 @@ import sys
 # eclipseSyntax
 if False: from pyfbsdk_gen_doc import * #@UnusedWildImport
 
-_VERSION = 1.00
+_VERSION = 1.05
 
 # Load additions dependent on MoBu version
 if mbCore.mobuVer == 2010:
@@ -28,8 +28,12 @@ if mbCore.mobuVer == 2010:
 	from pyfbsdk_additions import HBoxLayout as FBHBoxLayout #@UnusedImport @UnresolvedImport
 	from pyfbsdk_additions import TabControl as FBTabControl #@UnusedImport @UnresolvedImport
 	from pyfbsdk_additions import GridLayout as FBGridLayout #@UnusedImport @UnresolvedImport
-elif mbCore.mobuVer == 2012 or mbCore.mobuVer == 2013:
+elif mbCore.mobuVer == 2012:
 	from pyfbsdk_additions import FBCreateUniqueTool, FBHBoxLayout, FBTabControl, FBGridLayout #@Reimport @UnresolvedImport @UnusedImport
+	fileMenuName = "&File"
+elif mbCore.mobuVer == 2013:
+	from pyfbsdk_additions import FBCreateUniqueTool, FBHBoxLayout, FBTabControl, FBGridLayout #@Reimport @UnresolvedImport @UnusedImport
+	fileMenuName = "File"
 else:
 	moBuLogger.error("Failed to find proper MoBu version: '%s'" % mbCore.mobuVer)
 
@@ -92,8 +96,8 @@ class MoBuToolsMenu(object):
 		
 		pcsGlobalToolName = "Art Monkey"
 		tool = FBCreateUniqueTool(pcsGlobalToolName)
-		tool.StartSizeX = 500
-		tool.StartSizeY = 120
+		tool.StartSizeX = 610
+		tool.StartSizeY = 185
 		
 		# Layout for the controls
 		x = FBAddRegionParam(5, FBAttachType.kFBAttachLeft, "")
@@ -152,8 +156,8 @@ class MoBuToolsMenu(object):
 				
 		# create tab
 		tab = FBTabControl()
-		# we want the tab to span from row 0 to row 2 and from column 2 to column 2
-		grid.AddRange(tab, 0, 2, col, col)
+		# we want the tab to span from row 0 to row 3 and from column 2 to column 2
+		grid.AddRange(tab, 0, 3, col, col)
 		
 		# set the spacing between col0 and col1
 		grid.SetColSpacing(col, 20)
@@ -163,6 +167,7 @@ class MoBuToolsMenu(object):
 		grid.SetRowHeight(0, 20)
 		grid.SetRowHeight(1, 20)
 		grid.SetRowHeight(2, 20)
+		grid.SetRowHeight(3, 70)
 		
 		# 1. Build a construction dictionary with {folder=[files]}
 		self.menuDict, ext = self.getMenuDic()
@@ -178,20 +183,24 @@ class MoBuToolsMenu(object):
 			menuName = str(Path(menu).basename())
 			# skip root and 'old'
 			if not menuName == 'old' and not menuName == 'menu':
-				lyt = FBHBoxLayout()
-				lyt.default_space = 5
-				lyt.SetRegionTitle("My Title", "Title")
+				tabLayout = FBGridLayout()
+#				lyt.default_space = 5
+				tabLayout.SetRegionTitle("My Title", "Title")
 				
 				x = FBAddRegionParam(10, FBAttachType.kFBAttachLeft, "")
 				y = FBAddRegionParam(20, FBAttachType.kFBAttachTop, "")
 				w = FBAddRegionParam(140, FBAttachType.kFBAttachRight, "")
 				h = FBAddRegionParam(75, FBAttachType.kFBAttachBottom, "")
-				lyt.AddRegion(menuName, menuName, x, y, w, h)
+				tabLayout.AddRegion(menuName, menuName, x, y, w, h)
 		
 				# must add dir to sys.path so imp can find it
 				if not Path.modulePath(menu):
 					sys.path.append(menu)
 				
+				row = 0
+				column = 0
+				colWidth = 0
+				colMax = {0:0, 1:0, 2:0, 3:0, 4:0}
 				for script in self.menuDict[menu]:
 					if not script == '__init__%s' % ext:
 						toolName = str(Path(script).namebase)
@@ -207,12 +216,26 @@ class MoBuToolsMenu(object):
 		
 						# this callBack is active and all buttons will run this "last" menuModule.run()
 						lTool.OnClick.Add(self.KToolsCallback)
+						tabLayout.Add(lTool, row, column)
 						
+						# make column maximum of all rows
+						colWidth = len(toolName) * 7 + 2
+						if colWidth > colMax[column]:
+							colMax[column] = colWidth
+						
+						tabLayout.SetColWidth(column, colMax[column])
+						tabLayout.SetRowHeight(row, 30)
 						# add button to tabbed sub-layout
-						lyt.Add(lTool, len(toolName) * 7)
+						tabLayout.Add(lTool, row, column)
+						
+						# increment columns, rows
+						column += 1
+						if column > 3:
+							row += 1
+							column = 0
 			
 				# add layouts to tabControl with name of dir
-				tab.Add(menuName, lyt)
+				tab.Add(menuName, tabLayout)
 		
 		# finish up tab
 		tab.SetContent(0)
@@ -273,7 +296,7 @@ def KToolsCallbackSubMenu(control, event):
 # do File Menu
 #TODO: Defer evaluation so hacks to top of menu?
 menuMgrF = FBMenuManager()
-mainMenuF = menuMgrF.GetMenu("&File")
+mainMenuF = menuMgrF.GetMenu(fileMenuName)
 mainMenuF.InsertFirst("(PCS) Save As...", 0)
 mainMenuF.InsertFirst("(PCS) Save...", 1)
 mainMenuF.InsertFirst("(PCS) Open...", 2)
@@ -281,38 +304,40 @@ mainMenuF.OnMenuActivate.Add(KFileCallbackMenu)
 
 # do ArtMonkey Menu
 menuMgr = FBMenuManager()
-menuMgr.InsertBefore(None, "&Help", "ArtMonkey")
-menu = menuMgr.GetMenu("ArtMonkey")
+if not menuMgr.GetMenu("ArtMonkey"):
+	menuMgr.InsertBefore(None, "&Help", "ArtMonkey")
+	menu = menuMgr.GetMenu("ArtMonkey")
+		
+	# Docs menu item first
+	docMenuItem = menu.InsertFirst("Documentation", 0)
+	menu.OnMenuActivate.Add(KToolsCallbackMenu)
 	
-# Docs menu item first
-docMenuItem = menu.InsertFirst("Documentation", 0)
-menu.OnMenuActivate.Add(KToolsCallbackMenu)
-
-menuDict, ext = MoBuToolsMenu().getMenuDic()
-
-# 2. Sorted Keys list
-sKeys = []
-for dr in menuDict.iterkeys():
-	sKeys.append(dr)
-sKeys.sort()
-
-count = 0
-for menuNamePath in sKeys:
-	menuName = str(Path(menuNamePath).basename())
-	# skip root and 'old'
-	if not menuName == 'old' and not menuName == 'mobuMenu':
-		subMenu = FBGenericMenu()
-		i = 0
-		for script in menuDict[menuNamePath]:
-			if not script == '__init__%s' % ext:
-				toolName = str(Path(script).namebase)
-				subMenu.InsertFirst(toolName, i)
-				i+=1
-				
-		subMenu.OnMenuActivate.Add(KToolsCallbackSubMenu)
-		menu.InsertLast(menuName, 101+count, subMenu)
-		count+=1
-
+	menuDict, ext = MoBuToolsMenu().getMenuDic()
+	
+	# 2. Sorted Keys list
+	sKeys = []
+	for dr in menuDict.iterkeys():
+		sKeys.append(dr)
+	sKeys.sort()
+	
+	count = 0
+	for menuNamePath in sKeys:
+		menuName = str(Path(menuNamePath).basename())
+		# skip root and 'old'
+		if not menuName == 'old' and not menuName == 'mobuMenu':
+			subMenu = FBGenericMenu()
+			i = 0
+			for script in menuDict[menuNamePath]:
+				if not script == '__init__%s' % ext:
+					toolName = str(Path(script).namebase)
+					subMenu.InsertFirst(toolName, i)
+					i+=1
+					
+			subMenu.OnMenuActivate.Add(KToolsCallbackSubMenu)
+			menu.InsertLast(menuName, 101+count, subMenu)
+			count+=1
+else:
+	moBuLogger.info("ArtMonkey menu already found.")
 ###################################################################
 
 	
