@@ -25,7 +25,7 @@
 	<Core 
 		teams="['teamA', 'teamB', 'teamC', 'teamD']"
 		devs = "['devA', 'devB']"
-		PCSprojectName = "ArtMonkey"
+		PCStoolName = "ArtMonkey"
 		pyMelVer = "{'2011': 'pymel-1.0.2', '2012': 'pymel-1.0.3'}"
 		pyMoBuVer = "{'2012': 'PyMoBu-0.1', '2013': 'PyMoBu-0.2'}"
 		pyMelRoot = "python/maya/site-packages"
