@@ -330,22 +330,22 @@ class MoBuFile(MoBuCore):
 		if not Path(pathFile).ext:
 			pathFile = '%s.fbx' % pathFile
 			
-		# checkout from perforce
-		if p4:
-			if self.pcsParseObj.isp4Active:
-				self.p4.fileName = pathFile
-				if self.p4.isP4Connected:
-					try:
-						self.p4.p4CheckOut(desc=text)
-#					except P4.P4Exception:
-					except:
-						moBuLogger.warning("Failed to checkout: '%s'" % pathFile)
-			else:
-				if not quiet:
-					moBuLogger.warning('P4Active setting FALSE, not checking out.')
-		else:
-			if not quiet:
-				moBuLogger.warning("p4 arg passed as False, not checking out for file: '%s'." % pathFile)
+#		# checkout from perforce
+#		if p4:
+#			if self.pcsParseObj.isp4Active:
+#				self.p4.fileName = pathFile
+#				if self.p4.isP4Connected:
+#					try:
+#						self.p4.p4CheckOut(desc=text)
+##					except P4.P4Exception:
+#					except:
+#						moBuLogger.warning("Failed to checkout: '%s'" % pathFile)
+#			else:
+#				if not quiet:
+#					moBuLogger.warning('P4Active setting FALSE, not checking out.')
+#		else:
+#			if not quiet:
+#				moBuLogger.warning("p4 arg passed as False, not checking out for file: '%s'." % pathFile)
 
 		if not pOptions:
 			pOptions = self.customFBFbxOptions(pLoad=False, saveAllTakes=True)
