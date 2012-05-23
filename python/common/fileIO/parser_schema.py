@@ -115,7 +115,7 @@ class ParseSchema(object):
 		return self.getMayaDir('characterRoot')
 	
 	def getUnitTestSource(self):
-		return '%s/python/unitTests/source/' % gv.toolsLocation
+		return '%s/python/tests/source/' % gv.toolsLocation
 	
 	def getWellFormed(self, varName='', listName='Rigging'):
 		
