@@ -74,7 +74,7 @@ class MoBuToolsMenu(object):
 		ext = '.py'
 		
 		# Add tools procedurally from ../mobuMenu
-		self.mobuMenuPath = '%s/python/moBu/menu/' % gv.toolsLocation
+		self.mobuMenuPath = Path('%s/python/moBu/menu/' % gv.toolsLocation)
 		if self.mobuMenuPath[:2] == '//':
 			# network, look for .pyc
 			ext = '.pyc'
@@ -171,6 +171,11 @@ class MoBuToolsMenu(object):
 		
 		# 1. Build a construction dictionary with {folder=[files]}
 		self.menuDict, ext = self.getMenuDic()
+		
+		# 1.5 add top menu path for Load, Save, SaveAs
+#		menuTop = self.menuDict.keys()[0]
+		if not Path.modulePath(self.mobuMenuPath):
+			sys.path.append(self.mobuMenuPath)
 		
 		# 2. Sorted Keys list
 		sKeys = []
