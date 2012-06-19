@@ -15,7 +15,7 @@ def run():
 	# determine sceneName
 	scenePathFile = moBuCore.MoBuCore().sceneName
 	reload(moBuFile)
-	moBuFile.MoBuFile().loadPCSoptions(scenePathFile)
+	moBuFile.MoBuFile().savePCSoptions(pathFile=scenePathFile, quiet=True, pOptions=None, p4=False)
 
 if not __name__ == '__main__':
 	print "menu.Save imported"
