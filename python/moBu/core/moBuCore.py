@@ -353,8 +353,9 @@ class MoBuSceneCore(MoBu):
 		Returns: [list] of ref nodes
 		'''
 		refNodes = []
-		allJoints = self.getAllByType(_type='FBModelSkeleton')
-		for joint in allJoints:
+#		allJoints = self.getAllByType(_type='FBModelSkeleton')
+		allNulls = self.getAllByType(_type='FBModelNull')
+		for joint in allNulls:
 			if re.search(schemaObj.getWellFormed('moBuRoot'), joint.Name):
 				# double check for no parent
 				if not joint.Parent:
