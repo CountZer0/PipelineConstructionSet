@@ -264,6 +264,12 @@ class MoBuSets(MoBuCore):
 			Returns: True/False
 		'''
 		mySet = self.findSet(name=setName, quiet=quiet)
+		if not mySet:
+			moBuLogger.warning("Could not find Set %s" % setName)
+			return False
+		if len(mySet.Items) == 0:
+			moBuLogger.warning("No items in Set %s" % setName)
+			return False
 		success = self.deleteAll(mySet.Items)
 		
 		# delete set itself
@@ -290,7 +296,7 @@ class MoBuSets(MoBuCore):
 			for item in pSet.Items:
 				if item.Name == pObject:
 					moBuLogger.info("Found '%s' in '%s'" % (item.Name, pSet.Name))
-					return True 
+					return True
 		else:
 			#check directly
 			for item in pSet.Items:
@@ -299,7 +305,11 @@ class MoBuSets(MoBuCore):
 					return True 
 		
 		# not found
-		moBuLogger.info("Did not find '%s' in '%s'" % (pObject, pSet.Name))
+		if isinstance(pObject, str):
+			pObjectName = pObject
+		else:
+			pObjectName = pObject.LongName
+		moBuLogger.info("Did not find '%s' in '%s'" % (pObjectName, pSet.Name))
 		return False
 	
 	
