@@ -1,0 +1,50 @@
+
+
+--------------- Download from github ---------------
+
+https://github.com/CountZer0/PipelineConstructionSet
+
+and sync the project to your local git folder:
+C:\Users\[username]\git\PipelineConstructionSet
+
+or copy PipelineConstructionSet folder to your favorite location. This folder will be referred
+to as [PCSroot] in this document.
+
+
+
+--------------- Installation instructions ---------------
+
+A. Set 'toolsLocation' in [PCSroot]/python/common/core/globalVariables.py to location of
+[PCSroot] chosen above.
+
+
+B. Set PYTHONPATH environment variable to [PCSroot]/python
+
+
+
+
+--------------- MotionBuilder hook-up ---------------
+
+A. Open Settings -> Preferences -> Python  and specify 'Python startup folder' as:
+	[PCSroot]/python/moBu/startup
+
+
+
+--------------- Maya hook-up ---------------
+
+A. Copy userSetup.mel from
+	[PCSroot]/maya/mel/userSetup.mel
+	
+	to maya scripts folder:
+	C:\Users\[username]\Documents\maya\2012-x64\scripts\userSetup.mel
+
+	Change line #2 in userSetup.mel 'mayaMenuBoothPath' and set to:
+	[PCSroot]/python/maya/startup
+
+
+
+--------------- Future Apps to come ---------------
+Max?
+Unity?
+	
+	
