@@ -155,7 +155,7 @@ class PCSlogging(logging.Logger):
 			finally:
 				print "Not in Maya or MoBu?"
 		
-def pcs_logger(filePathName='%s/data/%s/%s.log' % (gv.schemaLocation, getpass.getuser(), getpass.getuser()), logger='', name='pcs_logger', fresh=0):
+def pcs_logger(filePathName='%s/data/%s/%s.log' % (gv.logLocation, getpass.getuser(), getpass.getuser()), logger='', name='pcs_logger', fresh=0):
 	"""		
 	SYNOPSIS: Creates nice logger. Will nuke FileHandler logger of similar
 				type if filePathName is different from existing loggers
