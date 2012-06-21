@@ -1,0 +1,572 @@
+/*
+This library stores UI related funtions:
+buttonSwitcher($caseString["on"; "off"], $button);
+frameToggler($framesArray, $paddingInteger, $windowString)
+tabToggler($tabLayoutString, $tabHeightInteger, $windowString)
+*/
+
+global proc ca_toShelf (string $shelf, string $label, string $script, string $icon) 
+    {
+    global string $gShelfTopLevel;
+	global string $SOEmenuPath;
+	$icon = ($SOEmenuPath + $icon);
+
+	if ($shelf == "current")
+		{
+	    if (`tabLayout -exists $gShelfTopLevel`) 
+	        {
+	        string $currentShelf = `tabLayout -query -selectTab $gShelfTopLevel`;
+	        setParent $currentShelf;
+	
+	    //  Create the shelf button on the current shelf.
+	    //  Give it the default MEL script icon,
+	    //  and set the short label too.
+	
+	        shelfButton 
+	            -command $script
+	            -label $label
+	            -annotation $script
+	            -imageOverlayLabel $label
+	            -image1 $icon 
+	            -style `shelfLayout -query -style $currentShelf`
+	            -width `shelfLayout -query -cellWidth $currentShelf`
+	            -height `shelfLayout -query -cellHeight $currentShelf`;
+	        }
+		}
+    }
+
+global proc ca_lister(string $case, string $list)
+{
+string $meshes[] = `ls -sl`;
+if (($case != "addNoSort") && ($case != "loadNoSort")) $meshes = `sort($meshes)`;
+string $listItems[];
+if (($case == "load") || ($case == "loadNoSort"))
+	{
+	if (`size($meshes)`>0)
+		{
+		textScrollList	-e -ra $list;
+		for ($each in $meshes)
+			{
+			string $selCmd = ("ca_lister(\"select\", " + "\"" + $list + "\"" + ");");
+			textScrollList -e -a $each -sc $selCmd $list;
+			}
+		}			
+	}
+	
+else if (($case == "add") || ($case == "addNoSort"))
+	{
+	if (`size($meshes)`>0)
+		{
+		$listItems = `textScrollList -q -ai $list`;
+		textScrollList -e -ra $list;
+		string $combined[] = `stringArrayCatenate $listItems $meshes`;
+		$combined = `stringArrayRemoveDuplicates $combined`;
+		$combined = `sort($combined)`;
+		for ($each in $combined)
+			{
+			string $selCmd = ("ca_lister(\"select\", " + "\"" + $list + "\"" + ");");
+			textScrollList -e -a $each -sc $selCmd $list;
+			}
+		clear $combined;
+		clear $listItems;
+		}	
+	}
+	
+else if ($case == "remove")
+	{
+	$listItems = `textScrollList -q -si $list`;
+	for ($each in $listItems)
+		{
+		textScrollList -e -ri $each $list;
+		}
+	}
+	
+else if ($case == "removeDel")
+	{
+	$listItems = `textScrollList -q -si $list`;
+	for ($each in $listItems)
+		{
+		textScrollList -e -ri $each $list;
+		delete $each;
+		}	
+	}
+	
+else if ($case == "refresh")
+	{
+	$listItems = `textScrollList -q -ai $list`;
+	textScrollList -e -ra $list;
+	string $existMeshes[];
+	clear $existMeshes;
+	for ($each in $listItems)
+		{
+		if (`objExists $each`) $existMeshes[size($existMeshes)] = $each;	
+		}
+	if (`size($existMeshes)`>0)
+		{
+		select -r $existMeshes;
+		ca_lister("load", $list);
+		}			
+	}
+	
+else if ($case == "select")
+	{
+	string $existMeshes[];
+	clear $existMeshes;
+	string $meshes[] = `textScrollList -q -si $list`;
+	for ($mesh in $meshes)
+		{
+		if (`objExists $mesh`) $existMeshes[size($existMeshes)] = $mesh;	
+		}
+	if (`size($existMeshes)` > 0) select -r $existMeshes;			
+	}
+	
+else if ($case == "swap")
+	{
+	string $lists[] = ca_tok($list, "|");
+	string $fromList = $lists[0];
+	string $toList = $lists[1];
+	
+	if (($fromList != "") && ($toList != ""))
+		{
+		string $meshes[] = `textScrollList -q -si $fromList`;
+	
+		for($x=0;$x<(size($meshes));$x+=1)
+			{
+			textScrollList -e -ri $meshes[$x] $fromList;
+			textScrollList -e -a $meshes[$x] -sc ("ca_lister(\"select\"," + "\"" + $toList + "\"" + ");") $toList;
+			}		
+		}
+		
+	}
+}
+
+global proc ca_sysLauncher(string $file)
+{
+if (`gmatch $file ("//" + "*")`) $file = `substitute "//" $file "\\\\"`;
+system("load " + $file );	
+
+}
+
+global proc ca_buttonSwitcher(string $case, string $button, string $style)
+{
+float $redgreenOff[] = {1.0000, 0.0000, 0.0000};
+float $redgreenOn[] = {0.0000, 1.0000, 0.0000};
+float $greyOff[] = {0.7333,0.7176,0.6862};
+float $greyOn[] = {0.9294,0.9137,0.8823};
+float $qtOn[] = {0.5,0.5,0.5};
+float $qtOff[] = {0.3,0.3,0.3};
+float $cOn[];
+float $cOff[];
+if ($style == "redgreen")
+	{
+	 $cOn = $redgreenOn;
+	$cOff = $redgreenOff;	
+	}
+else if ($style == "grey")
+	{
+	 $cOn = $greyOn;
+	$cOff = $greyOff;	
+	}
+else if ($style == "qt")
+	{
+	$cOn = $qtOn;
+	$cOff = $qtOff;	
+	}
+if($case == "on") iconTextCheckBox -e -bgc $cOn[0] $cOn[1] $cOn[2] $button;
+if($case == "off") iconTextCheckBox -e -bgc $cOff[0] $cOff[1] $cOff[2] $button;
+
+}
+
+global proc ca_buttonMultiSwitcher(string $case, string $buttons[], string $style)
+{
+float $redgreenOff[] = {1.0000, 0.0000, 0.0000};
+float $redgreenOn[] = {0.0000, 1.0000, 0.0000};
+float $greyOff[] = {0.7333,0.7176,0.6862};
+float $greyOn[] = {0.9294,0.9137,0.8823};
+float $qtOn[] = {0.5,0.5,0.5};
+float $qtOff[] = {0.3,0.3,0.3};
+float $cOn[];
+float $cOff[];
+if ($style == "redgreen")
+	{
+	 $cOn = $redgreenOn;
+	$cOff = $redgreenOff;	
+	}
+else if ($style == "grey")
+	{
+	 $cOn = $greyOn;
+	$cOff = $greyOff;	
+	}
+else if ($style == "qt")
+	{
+	$cOn = $qtOn;
+	$cOff = $qtOff;	
+	}
+
+iconTextCheckBox -e -bgc $cOn[0] $cOn[1] $cOn[2] $buttons[0];
+iconTextCheckBox -e -v 1 $buttons[0];
+for ($a=1;$a<(size($buttons));$a=$a+1)
+	{
+	iconTextCheckBox -e -bgc $cOff[0] $cOff[1] $cOff[2] $buttons[$a];
+	iconTextCheckBox -e -v 0 $buttons[$a];
+	}
+		
+}
+
+
+//Make a framToggler function that gets all form children automatically
+/*
+global proc ca_frameTogglerPlus(int $pad, string $parentForm)
+	{	
+	int $newWinH;
+	string $allKids[] = `window -q -ca UIT_tool_win`;
+	int $addedFrames;
+	for ($frm in $frames)
+		{
+		int $tValue = `frameLayout -q -h $frm`;
+		$addedFrames = ($addedFrames + $tValue);
+		}
+	
+	$newWinH = ($addedFrames + $pad);
+	window -e -h $newWinH $win;			
+	}
+*/
+
+global proc ca_frameToggleTab(string $frame, int $maxH, int $pad)
+{
+string $allChildren[] = `frameLayout -q -ca $frame`;
+$allChildren = `scrollLayout -q -ca $allChildren[0]`;
+int $setHeight;
+int $height = `formLayout -q -h $allChildren[0]`;
+if ($height > $maxH) $setHeight = $maxH;
+else $setHeight = ($height + $pad);
+frameLayout -e -h $setHeight $frame;	
+}	
+
+global proc ca_frameToggler(string $frames[], int $pad, string $win)
+{
+int $newWinH;
+int $addedFrames;
+for ($frm in $frames)
+	{
+	int $tValue = `frameLayout -q -h $frm`;
+	$addedFrames = ($addedFrames + $tValue);
+	}
+
+$newWinH = ($addedFrames + $pad);
+window -e -h $newWinH $win;	
+}
+
+global proc ca_tabToggler(string $tabLayout, int $padding, string $win)
+{
+//string $tabLayout = "STB_prefsTabs"
+string $activeTb = `tabLayout -q -st $tabLayout`;
+string $frames[] = `formLayout -q -ca $activeTb`;
+ca_frameToggler($frames, $padding, $win);
+//print "\npassing: \n";
+//print $frames;
+//window -e -h $tHeight $win;
+}
+
+global proc ca_frameTogglerIntelliScroll(string $frames[], int $pad, string $win)
+{
+//If you have a scroll layout - using this will only force you to scroll when the standard monitor height is exceeded
+int $newWinH;
+int $addedFrames;
+for ($frm in $frames)
+	{
+	int $tValue = `frameLayout -q -h $frm`;
+	$addedFrames = ($addedFrames + $tValue);
+	}
+
+$newWinH = ($addedFrames + $pad);
+if ($newWinH <= 1200) window -e -h $newWinH $win;	
+}
+
+/*
+Finish this for a more generic approach
+global proc ca_attachArrayToUI(string $toAttach[], string $uiParent, string $topParent)
+	{
+
+			
+	}
+*/
+global proc ca_descriptWin (string $optionLoc, string $scriptName)
+{
+string $content[] = `ca_fileReader($optionLoc)`;
+global string $SOEmenuPath;
+global int $SOEdev;
+print $optionLoc;
+print $scriptName;
+
+int $cButton = 0;
+if (($SOEdev) && (!`gmatch $optionLoc ($SOEmenuPath + "*")`)) $cButton = 1;
+	
+//Treat the content
+string $dContArr[];
+string $iContArr[];
+string $aContArr[];
+clear $dContArr;
+clear $iContArr;
+clear $aContArr;
+
+int $webButton = 0;
+string $webAddress;
+int $cCount = 0;
+for ($each in $content)
+	{
+	if ($each == "//Description")
+		{
+		for ($a=($cCount+1);$a<(size($content));$a=$a+1)
+			{
+			if (`gmatch $content[$a] "//*" `) break;
+			else $dContArr[size($dContArr)] = $content[$a];
+			}	
+		}
+	else if ($each == "//Instructions")
+		{
+		for ($b=($cCount+1);$b<(size($content));$b=$b+1)
+			{
+			if (`gmatch $content[$b] "//*" `) break;
+			else $iContArr[size($iContArr)] = $content[$b];
+			}	
+		}			
+	else if ($each == "//About")
+		{
+		for ($c=($cCount+1);$c<(size($content));$c=$c+1)
+			{
+			if (`gmatch $content[$c] "//*" `) break;
+			else $aContArr[size($aContArr)] = $content[$c];
+			}	
+		}
+		
+	else if ($each == "//Web")
+		{
+		$webButton = 1;
+		for ($d=($cCount+1);$d<(size($content));$d=$d+1)
+			{
+			if (`gmatch $content[$d] "//*" `) break;
+			else $webAddress = $content[$d];
+			}	
+		}		
+		
+	$cCount++;
+	}
+	
+	int $uiLabelWidth = 150;
+	int $uiInputWidth = 80;
+	int $uiWidth = $uiLabelWidth + $uiInputWidth + 220;
+	int $winPad;
+	if ($cButton) $winPad = 85;
+	else $winPad = 38;
+	float $colorLight[] = { 0.9294000268, 0.9136999846, 0.8823000193 };
+
+	if ( `window -exists ca_descWin` )
+		deleteUI ca_descWin;
+
+	window
+		-maximizeButton false
+		-resizeToFitChildren false
+		-title ($scriptName + " Help")
+		 ca_descWin;
+	
+			formLayout ca_descMainForm;	
+				scrollLayout -hst 16 -vst 16 -childResizable true -minChildWidth $uiWidth ca_descScroll;
+					formLayout ca_descContentForm;	
+						frameLayout
+							-label "Description"
+							-cc ("ca_frameTogglerIntelliScroll({\"ca_descDescFrame\", \"ca_descInstrFrame\", \"ca_descAboutFrame\"}, " + $winPad + ", \"ca_descWin\");") 
+							-ec ("ca_frameTogglerIntelliScroll({\"ca_descDescFrame\", \"ca_descInstrFrame\", \"ca_descAboutFrame\"}, " + $winPad + ", \"ca_descWin\");") 
+							-cll true
+							-lw $uiWidth
+							-mh 3
+			                -borderStyle "etchedIn"
+							-bv true
+							ca_descDescFrame;
+							columnLayout -adjustableColumn true;
+								rowLayout
+									-numberOfColumns 1
+									-cat 1 "left" 15;
+									text ca_descTxt;
+									setParent ..;
+								setParent ..;
+							setParent ..;							
+						frameLayout
+							-label "Instructions"
+							-cc ("ca_frameTogglerIntelliScroll({\"ca_descDescFrame\", \"ca_descInstrFrame\", \"ca_descAboutFrame\"}, " + $winPad + ", \"ca_descWin\");") 
+							-ec ("ca_frameTogglerIntelliScroll({\"ca_descDescFrame\", \"ca_descInstrFrame\", \"ca_descAboutFrame\"}, " + $winPad + ", \"ca_descWin\");") 
+							-cll true
+							-lw $uiWidth
+							-mh 3
+			                -borderStyle "etchedIn"
+							-bv true
+							ca_descInstrFrame;
+							columnLayout -adjustableColumn true;
+								rowLayout
+									-numberOfColumns 1
+									-cat 1 "left" 15;
+									text ca_instrTxt;						
+									setParent ..;
+								setParent ..;
+							setParent ..;
+						frameLayout
+							-label ("   About : " + $scriptName)
+							-cll false
+							-lw $uiWidth
+							-mh 3
+			                -borderStyle "etchedIn"
+							-bv true
+							ca_descAboutFrame;
+							columnLayout -adjustableColumn true;
+								rowLayout
+									-numberOfColumns 1
+									-cat 1 "left" 15;
+									text ca_aboutTxt;
+									if ($webButton) 
+										{
+										setParent ..;
+										rowLayout
+										-numberOfColumns 1
+										-cat 1 "left" 15;											
+										button -l $webAddress -bgc $colorLight[0] $colorLight[1] $colorLight[2] -h 20 -c ("system(" + "\"load "  + $webAddress + "\")") ca_webButton;
+										}
+						if ($cButton)
+							{
+							setParent ..;
+							setParent ..;
+							setParent ..;	
+							frameLayout
+								-label ("   Dev Commands : " + $scriptName)
+								-cll false
+								-lw $uiWidth
+								-mh 3
+			                	-borderStyle "etchedIn"
+								-bv false
+								ca_descConsFrame;
+							formLayout -p ca_descConsFrame ca_descConsForm;
+								button 	-l "Consolidate To SOE GLobal (Dev Location)"
+									-h 20
+									-bgc $colorLight[0] $colorLight[1] $colorLight[2]
+									-c ("ca_consolidateTool(\"" + $optionLoc + "\",\"" + $scriptName + "\");")
+								ca_descConsButton;
+								formLayout -e
+									-af  ca_descConsButton		"top"		5	
+									-af  ca_descConsButton		"left"		5
+									-af  ca_descConsButton		"right"		5	
+								ca_descConsForm;
+							}
+													
+	string $dCont = "";
+	string $iCont = "";
+	string $aCont = "";
+	
+	for ($desc in $dContArr){ $dCont = ($dCont + $desc + "\n"); }	
+	for ($instr in $iContArr){ $iCont = ($iCont + $instr + "\n"); }	
+	for ($about in $aContArr){ $aCont = ($aCont + $about + "\n"); }	
+		
+		
+		
+	text -e -label $dCont ca_descTxt;
+	text -e -label $iCont ca_instrTxt;
+	text -e -label $aCont ca_aboutTxt;
+	
+	formLayout -edit
+		-attachForm ca_descScroll "top" 0
+		-attachForm ca_descScroll "left" 4
+		-attachForm ca_descScroll "right" 4
+		-attachForm ca_descScroll "bottom" 4		
+		ca_descMainForm;
+
+	formLayout	-e
+
+		-af	ca_descDescFrame		"top"	0
+		-af	ca_descDescFrame		"left"	0
+		-af	ca_descDescFrame		"right"	0
+
+		-ac	ca_descInstrFrame		"top"	0	ca_descDescFrame
+		-af	ca_descInstrFrame		"left"	0
+		-af	ca_descInstrFrame		"right"	0
+		
+		-ac	ca_descAboutFrame		"top"	0	ca_descInstrFrame
+		-af	ca_descAboutFrame		"left"	0
+		-af	ca_descAboutFrame		"right"	0		
+		ca_descContentForm;
+	
+	if ($cButton)
+		{
+	formLayout	-e		
+		-ac	ca_descConsFrame		"top"	0	ca_descAboutFrame
+		-af	ca_descConsFrame		"left"	0
+		-af	ca_descConsFrame		"right"	0		
+		ca_descContentForm;				
+		}
+
+	showWindow ca_descWin;	
+	ca_frameTogglerIntelliScroll({"ca_descDescFrame", "ca_descInstrFrame", "ca_descAboutFrame"},  $winPad, "ca_descWin"); 	
+}
+
+global proc ca_consolidateTool(string $toolLoc, string $scriptName)
+	{
+
+	global string $SOEmenuPath;
+	global string $ca_fbResult;
+	global string $SOEtPad;
+	
+	
+	string $scriptFile = substituteAllString($toolLoc, ".opb", ".mel");
+	string $opbFile = $toolLoc;
+	string $iconFile = substituteAllString($toolLoc, ".opb", ".bmp");
+	
+	if (`file -q -ex $scriptFile`)
+		{
+		string $origFileCont[] = ca_fileReader($scriptFile);
+		
+		//Kick up a UI and let the dev choose which location he/she wants to consolidate to
+		string $defaultPath = ($SOEmenuPath + "menuScripts/");
+		// query Maya's current workspace:  
+		string $mayaWorkspace = `workspace -q -dir`;
+		// set the workspace to where I want the dialog to open
+		workspace -dir $defaultPath;
+		// open the dialog
+		fileBrowserDialog -m 4 -fc "ca_getFBPath" -an "Where would you like to consolidate to?" ;
+		// Setting the workspace back again:
+		workspace -dir $mayaWorkspace;	
+		//Make sure that the tool was consolidated to the dev SOE global location
+		if (`gmatch $ca_fbResult ($SOEmenuPath + "*")`)
+			{
+			//Print the file content to the new location
+			ca_fileWriter(($ca_fbResult + "/" + $scriptName + ".mel"), $origFileCont, "overwrite_normal");
+			//Copy over any existing .opb and iconFiles
+			string $sCopy;
+			string $tPaste = ("\"" + (toNativePath($ca_fbResult)) + "\"");
+			string $result;
+			
+			//.opb
+			$sCopy = ("\"" + (toNativePath($opbFile)) + "\"");
+			$result = system( "copy /y " + $sCopy + " " + $tPaste);
+			$result = strip($result);
+			if (`gmatch $result ("1 file(s) copied.")`) print ("\n" + $scriptName + ".opb - optionBox copied over");
+			else print ("\n" + $scriptName + ".opb does not exist - optionBox skipped");
+			
+			//.bmp
+			$sCopy = ("\"" + (toNativePath($iconFile)) + "\"");
+			$result = system( "copy /y " + $sCopy + " " + $tPaste);
+			$result = strip($result);
+			if (`gmatch $result ("1 file(s) copied.")`) print ("\n" + $scriptName + ".bmp - icon copied over");
+			else print ("\n" + $scriptName + ".bmp does not exist - icon skipped");			
+			
+			//Create the consolidation string for the original script
+			string $relMPath = substituteAllString(("/" + $ca_fbResult + "/"), $SOEmenuPath, "");
+			string $message = ($scriptName + " has been moved to: SOE Global -> " + $relMPath + ". " + "\\" + "n" + "SOE Global will be refreshed...");
+			string $printMessage[];
+			clear $printMessage;
+			$printMessage[size($printMessage)] = ("global proc " + $scriptName + "()");
+			$printMessage[size($printMessage)] = "{";
+			$printMessage[size($printMessage)] = ("confirmDialog -t \"Message\" -m \"" + $message + "\" -b \"OK\" -dismissString \"OK\";");
+			$printMessage[size($printMessage)]= "SOE_mayaToolsMenu(\"refresh\");";	
+			$printMessage[size($printMessage)] = "}";
+			eval($printMessage[2]);
+			eval($printMessage[3]);
+			}
+		}	
+	}

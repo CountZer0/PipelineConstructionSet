@@ -1,0 +1,400 @@
+/*
+This library stores procedures related to string wrangling:
+*string $returnArray[] = ca_returnUnique($checkArray,compareArray);
+*string $returnArray[] = ca_fileReader($fileString);
+*ca_fileWriter($fileString, $messageArray, $caseString["append_normal";"append_ordered";"overwrite_normal";"overwrite_ordered"]
+*string $returnArray[] = ca_tok($toDivyString, $withwhatString)
+*/
+
+global proc string[] ca_connectionQuerry(string $objects[], string $type)
+{
+	string $passBack[];
+	if ($type == "activeRigid")
+		{
+		for ($each in $objects)
+			{
+			string $rigidBodies[] = `listRelatives -s -typ "rigidBody" $each`;
+			if ($rigidBodies[0] != "")
+				{
+				if (`getAttr ($rigidBodies[0] + ".active")`) $passBack[size($passBack)] = $rigidBodies[0];
+				}
+			else $passBack[size($passBack)] = "none";	
+			}	
+		}
+	else if ($type == "passiveRigid")
+		{
+		for ($each in $objects)
+			{
+			string $rigidBodies[] = `listRelatives -s -typ "rigidBody" $each`;
+			if ($rigidBodies[0] != "")
+				{
+				if (!`getAttr ($rigidBodies[0] + ".active")`) $passBack[size($passBack)] = $rigidBodies[0];
+				}
+			else $passBack[size($passBack)] = "none";	
+			}	
+		}
+		
+	else if ($type == "rigid")
+		{
+		for ($each in $objects)
+			{
+			string $rigidBodies[] = `listRelatives -s -typ "rigidBody" $each`;
+			if ($rigidBodies[0] != "") $passBack[size($passBack)] = $rigidBodies[0];	
+			else $passBack[size($passBack)] = "none";	
+			}	
+		}
+	else if ($type == "rigid2Mesh")
+		{
+		for ($each in $objects)
+			{
+			string $tConns[] = `listConnections -type "transform" $each`;
+			if ($tConns[0] != "") $passBack[size($passBack)] = $tConns[0];	
+			}
+			
+		}
+	return $passBack;	
+	clear $passBack;	
+}
+
+global proc string[] ca_sceneQuerry(string $type)
+{
+	string $passBack[];
+	if ($type == "activeRigid")
+		{
+		string $rigidBodies[] = `ls -type "rigidBody"`;
+		for ($each in $rigidBodies)
+			{
+			if (`getAttr ($each + ".active")`) $passBack[size($passBack)] = $each;		
+			}	
+		}
+	else if ($type == "passiveRigid")
+		{
+		string $rigidBodies[] = `ls -type "rigidBody"`;
+		for ($each in $rigidBodies)
+			{
+			if (!`getAttr ($each + ".active")`) $passBack[size($passBack)] = $each;		
+			}	
+		}	
+	else if ($type == "rigid") $passBack = `ls -type "rigidBody"`;
+	else if ($type == "field") $passBack = `ls -type "field"`;
+	else if ($type == "rigidSolver") $passBack = `ls -type "rigidSolver"`;
+	
+		
+	return $passBack;	
+	clear $passBack;
+	}
+
+global proc string[] ca_getMaya(string $folder) 
+{
+	string $fileList[] = stringArrayCatenate(`getFileList -fs "*.ma" -folder $folder`, `getFileList -fs "*.mb" -folder $folder`);
+	$fileList = `sort $fileList`;
+	return $fileList;
+}
+
+global proc string[] ca_returnUnique(string $checkList[], string $compareList[])
+{
+
+	string $stringIntersector = `stringArrayIntersector`;
+	string $unique[];
+	int $m = 0;
+	for ($co in $checkList)
+		{
+		stringArrayIntersector -edit -intersect $compareList $stringIntersector ;
+		stringArrayIntersector -edit -intersect $co $stringIntersector ;
+	
+		string $strCheck[] = `stringArrayIntersector -query $stringIntersector `;
+		if ($strCheck[0] == "") 
+			{
+			$unique[$m] = $co;
+			$m++;
+			}
+		stringArrayIntersector -edit -reset $stringIntersector ;	
+		}
+	return $unique;
+	clear $unique;
+}
+
+global proc ca_getFBPath( string $fileNull, string $fileType )
+{
+	global string $ca_fbResult;
+	$ca_fbResult = $fileNull;
+}
+
+global proc string[] ca_fileReader(string $file)
+{
+	//read passed file
+	$fileId = `fopen $file "r"`;
+	string $nextLine = `fgetline $fileId`;
+	string $readFTok[];
+	string $readF[];
+	while(size($nextLine)>0)
+		{
+		tokenize($nextLine,"\n",$readFTok);
+		$readF[(size($readF))] = $readFTok[0];
+		$nextLine = `fgetline $fileId`;
+		}
+	fclose $fileId;
+	return $readF;
+}
+
+global proc ca_fileWriter (string $file, string $message[], string $case)
+{
+	string $cParts[] = ca_tok($case, "_");
+	
+	if ($cParts[0] == "append")
+		{
+		string $oFile[] = `fileReader($file)`;
+		string $writeM[] = stringArrayCatenate($oFile, $message);
+		if ($cParts[1] == "ordered") $writeM = `sort($writeM)`;
+		$fileId=`fopen $file "w"`; 
+		for ($a=0;$a<(size($writeM));$a++)
+			{
+			if ($a == ((`size($writeM)`)-1)) fprint $fileId ($writeM[$a]);
+			else fprint $fileId ($writeM[$a] + "\n");
+			}
+		fclose $fileId ;
+		}
+	
+	
+	if ($cParts[0] == "overwrite")
+		{
+		if ($cParts[1] == "ordered") $message= `sort($message)`;
+		$fileId=`fopen $file "w"`; 
+		for ($b=0;$b<(size($message));$b++)
+			{
+			if ($b == ((`size($message)`)-1)) fprint $fileId ($message[$b]);
+			else fprint $fileId ($message[$b] + "\n");
+			}
+		fclose $fileId ;
+		}
+
+}
+
+global proc string[] ca_tok (string $toDivy, string $char)
+{
+	string $parts[];
+	$tokenSize = `tokenize $toDivy $char $parts`;
+	return $parts;
+	}
+	
+global proc string[] ca_hierarchyFetch(string $sJoints[], string $fType)
+	{
+	string $sJoints[];
+	string $fType = "joint";
+	$sJoints = `ls -sl -type $fType`;
+	
+	string $hList[];
+	int $h = 0;
+	for ($trt in $sJoints)
+		{
+		$hList[`size($hList)`] = $sJoints[$h];
+		string $tmp[] = `listRelatives -c -ad -type $fType $sJoints[$h]`;
+		int $g = 0;
+		for ($a=0;$a<(size($tmp));$a=$a+1)
+			{
+			$hList[`size($hList)`] = $tmp[(`size($tmp)`-1)-$g];
+			$g++;
+			}
+		$h++;
+		}
+	return $hList;
+}
+
+global proc string[] ca_codeSearch(string $searchFldr[], string $searchString)
+{
+	string $fldrs[] = allFolders($searchFldr);
+	string $allDir[] = $searchFldr;
+	string $sResult[];
+	clear $sResult;
+	for ($gaga in $fldrs)
+		{
+		$allDir[size($allDir)] = ($gaga + "/");
+		}
+	
+	$find = "*" + $searchString + "*";
+	$allDir = sort($allDir);
+	string $melFiles[];
+	clear $melFiles;
+	string $melFilesLoc[];
+	clear $melFilesLoc;
+	for ($ta in $allDir)
+		{
+		string $tScripts[] =  `getFileList -folder $ta -filespec "*.mel"`;
+		for ($lb in $tScripts)
+			{
+			$melFiles[size($melFiles)] = $lb;
+			$melFilesLoc[size($melFilesLoc)] = $ta;
+			}
+		}
+	
+	
+	string $melM[];
+	clear $melM;
+	int $fCnt = 0;
+	for ($la in $melFiles)
+		{
+		$melM = `fileReader($melFilesLoc[$fCnt] + $la)`;
+		for ($li in $melM)
+			{
+			if (`gmatch $li $find`) $sResult[size($sResult)] = "Found " + $searchString + " in: " + ($allDir[$fCnt] + $la);
+			}
+		$fCnt++;
+		clear $melM;
+		}
+	return $sResult;
+	clear $sResult;
+}
+
+global proc string[] ca_grabAllInPath(string $path, string $case)
+{
+	string $cCase = $case;
+	string $return[];
+	if ($case == "folders")
+		{
+		if (`filetest -d $path`) $return[size($return)] = $path;			
+		}
+	if ($case == "files")
+		{
+		if (`filetest -f $path`) $return[size($return)] = (`substring $path 1 (size($path)-1)`);
+		}
+	if ($case == "filesFolders")
+		{
+		if (`filetest -d $path`) $return[size($return)] = $path;			
+		else 
+			{
+			$path = (`substring $path 1 (size($path)-1)`);
+			if (`filetest -f $path`) $return[size($return)] = $path;
+			}
+		}
+	if (`gmatch $case ("fileType_" + "*")`) 
+		{
+		string $casePts[] = ca_tok($case, "_");
+		string $matchFileExt = ("." + $casePts[1]);
+		string $tPath = (`substring $path 1 (size($path)-1)`);
+		if (`filetest -f $tPath`)
+			{
+			if (`gmatch $path ("*" + $matchFileExt + "*")`) $return[size($return)] = $tPath;
+			else $return = $return;
+			}	
+		}
+		
+	string $folderList[] = `getFileList -folder $path`;
+	for ($folder in $folderList)
+		{
+		string $subFolders[] = ca_grabAllInPath(($path + $folder + "/"), $cCase);
+	
+		for ($sFolder in $subFolders)
+			{
+			if ($case == "folders")
+				{
+				if (`filetest -d $sFolder`) $return[size($return)] = $sFolder;	
+				}
+			if ($case == "files")
+				{
+				if (`filetest -f $sFolder`) $return[size($return)] = $sFolder;
+				}
+			if ($case == "filesFolders")
+				{
+				$return[size($return)] = $sFolder;	
+				}
+				
+			if (`gmatch $cCase ("fileType_" + "*")`)
+				{
+				string $casePts[] = ca_tok($cCase, "_");
+				string $matchFileExt = ("." + $casePts[1]);
+				if (`filetest -f $sFolder`)
+					{
+					if (`gmatch $sFolder ("*" + $matchFileExt + "*")`) $return[size($return)] = $sFolder;	
+					}	
+				}		
+			}
+	
+		}
+	return $return;
+}
+
+global proc string[] ca_allFolders(string $sFldr[])
+{
+	string $files[];
+	string $folders[];
+	string $nFldrs[];
+	clear $nFldrs;
+	string $tFldrs[];
+	clear $tFldrs;
+	int $oFs = 0;
+	int $nFs = 0;
+	
+	string $folders[] = ca_folderFetch($sFldr);
+	
+	for ($pa in $folders)
+		{
+		$oFs = size($nFldrs);
+		$nFldrs = ca_folderFetch({($pa + "/")});
+		$folders = stringArrayCatenate($folders, $nFldrs);
+		$nFs = size($nFldrs);
+		for ($b=$oFs;$b<$nFs;$b=$b+1)
+			{
+			$tFldrs = ca_folderFetch({($nFldrs[$b] + "/")});
+			$folders = stringArrayCatenate($folders, $tFldrs);
+			}
+		clear $nFldrs;
+		clear $tFldrs;
+		}
+	$folders = stringArrayRemoveDuplicates($folders);
+		
+	$folders = sort($folders);
+	return $folders;
+	clear $folders;
+}
+
+global proc string[] ca_folderFetch(string $lPaths[])
+{
+	string $folders[];
+	string $files[];
+	int $cnt = 0;
+	for ($pt in $lPaths)
+		{
+		$files = `getFileList -folder $pt`;
+		for ($da in $files )
+			{
+			if (`filetest -d ($lPaths[$cnt] + $da)`) $folders[size($folders)] = ($lPaths[$cnt] + $da);
+			}
+		$cnt++;
+		}
+	return $folders;
+	clear $folders;
+	clear $files;
+}
+
+global proc string[] ca_filterSelection(string $selection[], string $type)
+{
+	string $returnObjects[];
+	for ($each in $selection)
+		{
+		string $shapes[] = `listRelatives -s $each`;
+		string $nodeTyp = `nodeType $shapes[0]`;
+		if ($nodeTyp == $type) $returnObjects[size($returnObjects)] = $each;			
+		}
+	return $returnObjects;
+	clear $returnObjects;
+}
+
+global proc string ca_clearIllegal(string $input)
+{
+string $rString;
+string $regex = "[^a-zA-Z0-9_]";
+string $replace = "_";
+
+int $i = 0;
+string $match;
+int $totalChars = `size($input)`;
+
+for ($i = 0; $i < $totalChars; $i++) 
+	{
+  	$match  = `match $regex $input`;
+  	$input = `substitute $regex $input $replace`;
+  	if ($match == "") break;
+	} 
+$rString = $input;
+return $rString;
+}
