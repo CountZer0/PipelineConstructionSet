@@ -1,0 +1,17 @@
+//-----------------------------------------------------------------//
+//	SCRIPT:	cte_localHost.mel
+//	AUTHOR:	Jason Parks
+//
+//	START DATE:	June 20, 2012	
+//
+// 	DESCRIPTION: wrapper for python code
+//
+//-----------------------------------------------------------------//
+
+
+// calls command from compiled python script
+global proc cte_localHost(){
+    python("import common.diagnostic.debug");
+    python("reload (common.diagnostic.debug)");
+    python("common.diagnostic.debug.Debug().connectToEclipse()");
+}

@@ -1,0 +1,18 @@
+//-----------------------------------------------------------------//
+//	SCRIPT:	environmentPaths.mel
+//	AUTHOR:	Jason Parks
+//
+//	START DATE:	June 20, 2012	
+//
+// 	DESCRIPTION: wrapper for python code
+//
+//-----------------------------------------------------------------//
+
+
+// calls command from compiled python script
+global proc environmentPaths(){
+    //python("from maya.core import mayaCore");
+    python("import mayaCore");
+    python("reload (mayaCore)");
+    python("mayaCore.Maya().getEnv()");
+}
