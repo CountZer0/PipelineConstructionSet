@@ -16,7 +16,7 @@ class FileManip(object):
     def __init__(self, maya=1):
         super(FileManip, self).__init__()
 
-        self.p4Obj = pcsP4.P4Lib(maya)
+#        self.p4Obj = pcsP4.P4Lib(maya)
 #        self.apParseObj = parser_AP.ParseAP()
 
     ##################################################################################################################################
