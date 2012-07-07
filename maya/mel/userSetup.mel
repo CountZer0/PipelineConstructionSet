@@ -1,13 +1,13 @@
 // <Art Monkey>
-string $mayaMenuBootPath = "C:/Users/[userName]/git/PipelineConstructionSet/python/maya/startup";
-string $mayaMenuBootModule = $mayaMenuBootPath + "/mayaMenuBoot.py";
-if (`file -q -ex $mayaMenuBootModule`){
+string $mayaMenuBootPath = "C:/Users/[userName]/git/PipelineConstructionSet/python/maya";
+if (`filetest -d $mayaMenuBootPath`){
 	python("import sys;sys.path.append('" + $mayaMenuBootPath + "')");
-	python("import mayaMenuBoot");
 	python("from pymel.core import *");
+	python("import core.sysGlobalMenu");
+	python("core.sysGlobalMenu.MayaMenu().startUp()");
 }else{
-	print ("Cannot find: " + $mayaMenuBootModule);
+	print ("Cannot find: " + $mayaMenuBootPath);
 };
 // </Art Monkey>
 
-//userSetup.mel launches mayaMenuBoot.py launches sysGlobalMenu.py
+//userSetup.mel launches sysGlobalMenu.py
