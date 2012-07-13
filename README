@@ -19,6 +19,10 @@ A. Set 'toolsLocation' in [PCSroot]/python/common/core/globalVariables.py to loc
 
 
 B. Set PYTHONPATH environment variable to [PCSroot]/python
+	i. if in OSX, modify ~/.profile:
+
+		PYTHONPATH="${PYTHONPATH}:/path/to/some/cool/python/package/:/path/to/another/cool/python/package/"
+		export PYTHONPATH
 
 
 
