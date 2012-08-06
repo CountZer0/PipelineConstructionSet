@@ -20,7 +20,7 @@ def FBAudioFmt_AppendFormat(pFormat,pChannels,pBits,pRate):
     """
     pass
 
-def FBAudioFmt_AppendFormat(pFormat,pSrcFormat):
+def FBAudioFmt_AppendFormat(pFormat,pSrcFormat): #@DuplicatedSignature
     """
     pFormat : FBAudioFmt
     pSrcFormat : FBAudioFmt
@@ -65,7 +65,7 @@ def FBAudioFmt_RemoveFormat(pFormat,pChannels,pBits,pRate):
     """
     pass
 
-def FBAudioFmt_RemoveFormat(pFormat,pSrcFormat):
+def FBAudioFmt_RemoveFormat(pFormat,pSrcFormat): #@DuplicatedSignature
     """
     pFormat : FBAudioFmt
     pSrcFormat : FBAudioFmt
@@ -320,7 +320,7 @@ C++ sample code:
     """
     pass
 
-def FBGetMultiLangText(pContext,pKey,pFlagReturnKey):
+def FBGetMultiLangText(pContext,pKey,pFlagReturnKey): #@DuplicatedSignature
     """
     Name lookup in a user defined context context.
     This version of the function is a little less useful as the context string, if not empty, will usually refer to internal class names of objects which is not easily available to the outside world.As a general rule, an SDK object whose class is 'FBObject' will be wrapping an internal object of class 'KObject'. For example an 'FBCamera' is a wrapper around a 'KCamera' object. Similarily an 'FBConstraint' wll wrap a 'KConstraint'. This pattern is not universal and may differ at times, so it will not always be applicable. There are also cases where an 'FB' objects has no corresponding 'K' object, such as in the case of an 'FBSystem' object.On lookup there are potentially two searches made: a first one, using the context if one was provided. Should the first search fail, a second search will be done without using the context.Again the lookup result is dependant on the current language selected, as indicated by the class FBMultiLangManager.The following sample code shows 2 cases that do not use context, and 2 cases that are using a context which are internal class names.Python sample code: 
@@ -384,7 +384,7 @@ def FBInterpolateRotation(pROut,pR0,pR1,pU):
     """
     pass
 
-def FBInterpolateRotation(pQOut,pQ0,pQ1,pU):
+def FBInterpolateRotation(pQOut,pQ0,pQ1,pU): #@DuplicatedSignature
     """
     Interpolate a rotation in Quaternion.
 
@@ -404,7 +404,7 @@ def FBLength(pV):
     """
     pass
 
-def FBLength(pV):
+def FBLength(pV): #@DuplicatedSignature
     """
     Get the length of a vertex (from origin).
 
@@ -540,7 +540,7 @@ def FBMult(pResult,pV1,pV2):
     """
     pass
 
-def FBMult(pResult,pV1,pV2):
+def FBMult(pResult,pV1,pV2): #@DuplicatedSignature
     """
     Calculate the cross product of two vectors.
 
@@ -550,7 +550,7 @@ def FBMult(pResult,pV1,pV2):
     """
     pass
 
-def FBMult(pResult,pM,pV):
+def FBMult(pResult,pM,pV): #@DuplicatedSignature
     """
     Calculate the cross product of a Matrix and Scale Vector.
 
@@ -609,7 +609,7 @@ def FBQMult(pResult,pQ1,pQ2):
     """
     pass
 
-def FBQMult(pResult,pQ1,pQ2):
+def FBQMult(pResult,pQ1,pQ2): #@DuplicatedSignature
     """
     Calculate the cross product of two quaternions.
 
@@ -896,7 +896,7 @@ class FBTime (object):
         """
         pass
 
-    def FBTime(self,pHour,pMinute,pSecond,pFrame,pField,pTimeMode,pFramerate):
+    def FBTime(self,pHour,pMinute,pSecond,pFrame,pField,pTimeMode,pFramerate): #@DuplicatedSignature
         """
         Constructor.
 
@@ -918,7 +918,7 @@ class FBTime (object):
         """
         pass
 
-    def Get(self):
+    def Get(self): #@DuplicatedSignature
         """
         Get time value (long).
 

@@ -202,10 +202,10 @@ class MayaMenu(object):
 		""" Clean out run time commands """
 
 		searchPadding = self.PCStPad
-		for e in runTimeCommand(q=1, userCommandArray=1):
+		for e in runTimeCommand(q=1, userCommandArray=1): #@UndefinedVariable
 			if (len(e.split('_')) > 1):
 				if e.split('_')[0] == searchPadding:
-					runTimeCommand(e, e=1, delete=1)
+					runTimeCommand(e, e=1, delete=1) #@UndefinedVariable
 
 	def PCSMenu_build(self):
 		""" Recursive portion """
@@ -249,7 +249,7 @@ class MayaMenu(object):
 			dictFiles = self.menuDict[e]
 			dictFiles.sort()
 			# Store the menuName
-			cMainName = e.replace(self.PCSmenuStart, self.PCStPad).replace('/', '_')
+			cMainName = e.replace(self.PCSmenuStart, self.PCStPad).replace('/', '_').replace('\\','_')
 			# Store the menuLabel
 			cMainLabel = ''
 			if (len(e.namebase.split('_')) > 1):
