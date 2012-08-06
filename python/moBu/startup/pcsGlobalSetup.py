@@ -4,7 +4,6 @@ Created: Apr 15, 2012
 Module: startup.pcsGlobalSetup
 Purpose: Adds paths to Mobu env
 '''
-#import getpass #@UnresolvedImport
 import os
 import sys
 import xml.etree.ElementTree as ET #@UnresolvedImport
@@ -34,7 +33,7 @@ else:
 	else:
 		#--------------------------------------------
 		# read from schema
-		pcsXML = ET.parse('%s/pcsSchema.xml' % gv.schemaLocation)
+		pcsXML = ET.parse('%s/schemas/pcsSchema.xml' % gv.toolsLocation)
 		pcsXMLcore = pcsXML.getiterator('Core')[0]
 		
 		#--------------------------------------------
