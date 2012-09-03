@@ -99,6 +99,7 @@ class MayaMenu(object):
 	def injectPaths(self):
 		""" Inject paths needed """
 		# already done in mayaMenuBoot.py
+		sys.path.append('%s/python/maya/site-packages' % self.PCStoolsLocation)
 		sys.path.append('%s/python/maya/site-packages/pymel-1.0.3' % self.PCStoolsLocation)
 		
 		mVer = about(version=1)
