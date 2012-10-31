@@ -219,13 +219,13 @@ class MayaMenu(object):
 			
 		with self.PCSMenu:
 			with subMenuItem('Options', label="Options", tearOff=1, allowOptionBoxes=1):
-				menuItem(label='Refresh Menu', command=self.PCSMenu_refresh)
+				menuItem(label='Refresh Menu', command=self.PCSMenu_refresh) #@UndefinedVariable
 				mel.eval('source "%s/mel/ca_Strings.mel"' % self.PCSmenuPath)
-				mel.eval('source "%s/mel/ca_UIFunctions.mel"' % self.PCSmenuPath)
-				menuItem(divider=1)
+				mel.eval('source "%s/mel/ca_UIFunctions.mel"' % self.PCSmenuPath) #@UndefinedVariable
+				menuItem(divider=1) #@UndefinedVariable
 			with subMenuItem(label="Docs", tearOff=1, allowOptionBoxes=1):
-				menuItem(label='Docs01')
-			menuItem(divider=1)
+				menuItem(label='Docs01') #@UndefinedVariable
+			menuItem(divider=1) #@UndefinedVariable
 		
 		# 1. Build a construction dictionary with {folder=[files]}
 		self.menuDict = {}
@@ -273,7 +273,7 @@ class MayaMenu(object):
 						for dFile in dictFiles:
 							# Intercept File Divider
 							if re.search('.div', dFile):
-								menuItem(divider=1)
+								menuItem(divider=1) #@UndefinedVariable
 							else:
 								# Mel file with no extension (this is a string of the mel file name)
 								fName = dFile.split('.')[0]
@@ -283,15 +283,15 @@ class MayaMenu(object):
 								# Make Run Time Command Name
 								rtName = '%s_%s' % (self.PCStPad, fName)
 								# If the run time command doesn't exist
-								if not runTimeCommand(rtName, q=1, ex=1):
-									runTimeCommand(rtName, commandLanguage="python", annotation=self.runTimeAnnotation, category=self.PCStoolName, command=rtCommand)
-									runTimeCommand(edit=1, category=self.PCStoolName, save=1)
+								if not runTimeCommand(rtName, q=1, ex=1): #@UndefinedVariable
+									runTimeCommand(rtName, commandLanguage="python", annotation=self.runTimeAnnotation, category=self.PCStoolName, command=rtCommand) #@UndefinedVariable
+									runTimeCommand(edit=1, category=self.PCStoolName, save=1) #@UndefinedVariable
 								# If the run time command does exist
 								else:
-									existingRTCommand = runTimeCommand(rtName, q=1, command=1)
+									existingRTCommand = runTimeCommand(rtName, q=1, command=1) #@UndefinedVariable
 									if not existingRTCommand == rtCommand:
-										runTimeCommand(rtName, e=1, command=rtCommand)
-										runTimeCommand(edit=1, category=self.PCStoolName, save=1)
+										runTimeCommand(rtName, e=1, command=rtCommand) #@UndefinedVariable
+										runTimeCommand(edit=1, category=self.PCStoolName, save=1) #@UndefinedVariable
 										
 								# Look for matching icon for menu item
 								icon = ''
@@ -300,24 +300,24 @@ class MayaMenu(object):
 								if os.path.exists('%s.png' % sPath):
 									icon = '%s.png' % sPath
 								if icon:
-									menuItem(label=fName, command='python("mel.%s()")' % rtName, image=icon)
+									menuItem(label=fName, command='python("mel.%s()")' % rtName, image=icon) #@UndefinedVariable
 								else:
-									menuItem(label=fName, command='python("mel.%s()")' % rtName)
+									menuItem(label=fName, command='python("mel.%s()")' % rtName) #@UndefinedVariable
 								# Intercept the engineA exporter
 								if fName == 'objectExporter':
 									# Source the option box
 									mel.eval('source "%s/mel/engineA/objectExporterOptions.mel"' % self.PCSmenuPath)
 									# Connect command with proc
-									menuItem(optionBox=1, command='python("mel.objectExporterOptions()")')
+									menuItem(optionBox=1, command='python("mel.objectExporterOptions()")') #@UndefinedVariable
 								else:
 									# Look for matching option box item
 									if os.path.exists('%s.opb' % sPath):
 										mel.eval('source "%s/mel/ca_Strings.mel"' % self.PCSmenuPath)
 										mel.eval('source "%s/mel/ca_UIFunctions.mel"' % self.PCSmenuPath)
-										menuItem(optionBox=1, command='python("mel.ca_descriptWin(\'%s.opb\', \'%s\')")' % (sPath, fName))
+										menuItem(optionBox=1, command='python("mel.ca_descriptWin(\'%s.opb\', \'%s\')")' % (sPath, fName)) #@UndefinedVariable
 										
 						# Divider between Commands and Folders																						
-						menuItem(divider=1)     
+						menuItem(divider=1) #@UndefinedVariable   
 	
 	def PCSMenu_refresh(self, *unused):	
 		""" Refresh Menu """
@@ -379,13 +379,13 @@ class MayaMenu(object):
 							self.log.debug('Team install data not present - %s/installData/%sTB.XML' % (gv.toolsLocation, changeTeam))
 					else:
 						cVal = 0
-				menuItem(itm, e=1, checkBox=cVal)
+				menuItem(itm, e=1, checkBox=cVal) #@UndefinedVariable
 			self.log.info('Active team changed to: %s' % self.PCSactiveTeam)
 		# Reset the active team to on
 		else:
 			for itm in itemArray:
 				if re.search(changeTeam, itm.name()):
-					menuItem(itm, e=1, checkBox=1)
+					menuItem(itm, e=1, checkBox=1) #@UndefinedVariable
 			self.log.info('Active team is the same: %s' % self.PCSactiveTeam)
 
 def tempFunc():

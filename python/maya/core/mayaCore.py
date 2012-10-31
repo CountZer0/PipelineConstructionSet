@@ -912,7 +912,7 @@ class MayaReferenceCore(Maya):
 					# Remove all namespaces
 					if removeNamespaces:
 						if removeNamespaces == 1:
-							namespace(mv=(ns, ':'), f=1)
+							namespace(mv=(ns, ':'), f=1) #@UndefinedVariable
 							Namespace(ns).remove()
 					# Store all nodes that was a part of the referenced file
 					if returnNodes:
@@ -924,7 +924,7 @@ class MayaReferenceCore(Maya):
 					for c in cleanNS:
 						Namespace.create(c[0])
 						self.logger.info('Moving name space - %s:%s - to - %s' % (c[1], c[0], c[0]))
-						namespace(mv=('%s:%s'%(c[1], c[0]), c[0]), f=1)
+						namespace(mv=('%s:%s'%(c[1], c[0]), c[0]), f=1) #@UndefinedVariable
 					for delC in cleanNS:
 						Namespace('%s:%s'%(delC[1], delC[0])).remove()
 					for unused in cleanNS:	
@@ -957,10 +957,10 @@ class MayaNamespaceCore(Maya):
 		sceneNameSpaces = listNamespaces(recursive=False, internal=False)
 		if case == 'clean':
 			for ga in sceneNameSpaces:
-				namespace(set=ga)
+				namespace(set=ga) #@UndefinedVariable
 				if not namespaceInfo(listOnlyDependencyNodes=True):
 					ga.remove()
-			namespace(set=':')
+			namespace(set=':') #@UndefinedVariable
 	
 	def giveNameSpace(self, node):
 		""" Return full namespace """
@@ -990,9 +990,9 @@ class MayaNamespaceCore(Maya):
 		# create new children NS
 		if childNS not in namespaceInfo(lon=1): Namespace.create(childNS)
 		
-		namespace(set=':')
+		namespace(set=':') #@UndefinedVariable
 		if nuke: childNS = ':'
-		namespace(mv=(ns, childNS), f=1)
+		namespace(mv=(ns, childNS), f=1) #@UndefinedVariable
 		
 		# delete it
 		Namespace(ns).remove()
