@@ -100,7 +100,7 @@ class MayaMenu(object):
 		""" Inject paths needed """
 		# already done in mayaMenuBoot.py
 		sys.path.append('%s/python/maya/site-packages' % self.PCStoolsLocation)
-		sys.path.append('%s/python/maya/site-packages/pymel-1.0.3' % self.PCStoolsLocation)
+		#sys.path.append('%s/python/maya/site-packages/pymel-1.0.3' % self.PCStoolsLocation) # add to Maya.env to get it in early enough
 		
 		mVer = about(version=1)
 		if search('x64', mVer):
