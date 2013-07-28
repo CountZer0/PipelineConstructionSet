@@ -65,7 +65,7 @@ class MoBuFile(MoBuCore):
 			moBuLogger.warning("FBFbxOptions are not valid for 2010")
 			return None
 		
-		elif self.mobuVer == 2012 or self.mobuVer == 2013:
+		elif self.mobuVer == 2012 or self.mobuVer == 2013 or self.mobuVer == 2014:
 			# create object
 			pFbxOptions = FBFbxOptions(pLoad)
 			
@@ -213,12 +213,12 @@ class MoBuFile(MoBuCore):
 		else:
 			moBuLogger.error("Failed to open '%s'" % pathFile)
 		
-		# check for hips
-		ref = self.getObject("Reference")
-		if ref:
-			if len(ref.Children) > 0:
-				if not ref.Children[0].Name == 'Hips':
-					moBuLogger.infoDialog("WARNING: No Hips found in scene. Check your joint names.", "Joints Missing")
+#		# check for hips
+#		ref = self.getObject("Reference")
+#		if ref:
+#			if len(ref.Children) > 0:
+#				if not ref.Children[0].Name == 'Hips':
+#					moBuLogger.infoDialog("WARNING: No Hips found in scene. Check your joint names.", "Joints Missing")
 		
 		return success
 
@@ -371,7 +371,7 @@ class MoBuFile(MoBuCore):
 				moBuLogger.errorDialog('There is a problem saving the file', 'Cannot Save')
 			
 		# 2012 save process
-		elif self.mobuVer == 2012 or self.mobuVer == 2013:
+		elif self.mobuVer == 2012 or self.mobuVer == 2013 or self.mobuVer == 2014:
 			alreadyExists = False
 			if Path(pathFile).exists():
 				alreadyExists = True

@@ -79,6 +79,10 @@ class MoBu(object):
 				quiet: if true does not warn when object doesn't exist
 			Returns: FBObject/PMBObject
 		'''
+		# use 2014 command
+		if self.mobuVer == 2014:
+			FBFindModelByName = FBFindModelByLabelName
+			
 		if not isinstance(name, str):
 			moBuLogger.debug("MoBu.getObject() was passed '%s'" % name)
 			# probably already an object
