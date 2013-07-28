@@ -31,7 +31,7 @@ if mbCore.mobuVer == 2010:
 elif mbCore.mobuVer == 2012:
 	from pyfbsdk_additions import FBCreateUniqueTool, FBHBoxLayout, FBTabControl, FBGridLayout #@Reimport @UnresolvedImport @UnusedImport
 	fileMenuName = "&File"
-elif mbCore.mobuVer == 2013:
+elif mbCore.mobuVer == 2013 or mbCore.mobuVer == 2014:
 	from pyfbsdk_additions import FBCreateUniqueTool, FBHBoxLayout, FBTabControl, FBGridLayout #@Reimport @UnresolvedImport @UnusedImport
 	fileMenuName = "File"
 else:
@@ -253,7 +253,8 @@ class MoBuToolsMenu(object):
 		writeArr.append('Running From: %s' % gv.toolsLocation)
 		writeArr.append('Mobu Version: %s %s' % (mbCore.moBuVersion(), mbCore.moBuBitVersion()))
 		
-		_file = open('%s/data/%s/%s.PCS' % (gv.schemaLocation, self.userName, self.userName), "w")
+		#_file = open('%s/data/%s/%s.PCS' % (gv.schemaLocation, self.userName, self.userName), "w")
+		_file = open('%s/data/%s/%s.PCS' % (gv.logLocation, self.userName, self.userName), "w")
 		for l in writeArr:
 			l = l.strip()
 			_file.write('%s\n' % l)
