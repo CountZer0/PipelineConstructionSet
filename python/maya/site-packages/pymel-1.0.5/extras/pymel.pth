@@ -1,0 +1,5 @@
+import sys; sys.__plen = len(sys.path)
+# INSTRUCTIONS: 1. replace the next line with the path to the folder where you extracted pymel: it should contain both 'pymel' and 'maya' dirs directly below it
+/path/to/top-pymel-dir
+# INSTRUCTIONS: 2. save this file and then copy it into Maya's site-packages directory
+import sys; new=sys.path[sys.__plen:]; del sys.path[sys.__plen:]; p=getattr(sys,'__egginsert',0); sys.path[p:p]=new; sys.__egginsert = p+len(new)
