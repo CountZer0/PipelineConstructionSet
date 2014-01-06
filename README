@@ -43,7 +43,7 @@ A. Copy userSetup.mel from
 	C:\Users\[username]\Documents\maya\2012-x64\scripts\userSetup.mel
 
 	Change line #2 in userSetup.mel 'mayaMenuBoothPath' and set to:
-	[PCSroot]/python/maya/startup
+	[PCSroot]/python/maya
 
 B. Add this line to your Maya.env:
 	PYTHONPATH = [PCSroot]/python/maya/site-packages/pymel-1.0.3
