@@ -1,9 +1,8 @@
-'''
-Author: Jason.Parks
-Created: April 17, 2012
-Module: common.fileIO.__init__
-Purpose: to import file utilities
-'''
-	
-	
-print "common.fileIO.__init__ imported" 
+"""
+Import file utilities modules
+
+*Author:*
+    * Jason.Parks, jason@continuityai.com, 1/8/14 4:46 PM
+"""
+
+print "common.fileIO.__init__ imported"
