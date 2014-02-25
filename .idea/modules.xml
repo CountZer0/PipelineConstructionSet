@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/PipelineConstructionSet.iml" filepath="$PROJECT_DIR$/.idea/PipelineConstructionSet.iml" />
+      <module fileurl="file://D:/Program Files/Autodesk/FBX/FBX Python SDK/2014.2/lib/Python27_x64/.idea/Python27_x64.iml" filepath="D:/Program Files/Autodesk/FBX/FBX Python SDK/2014.2/lib/Python27_x64/.idea/Python27_x64.iml" />
+      <module fileurl="file://D:/Program Files/Autodesk/FBX/FBX Python SDK/2014.2/samples/.idea/samples.iml" filepath="D:/Program Files/Autodesk/FBX/FBX Python SDK/2014.2/samples/.idea/samples.iml" />
+    </modules>
+  </component>
+</project>
+
