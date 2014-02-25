@@ -18,14 +18,6 @@ A. Set 'toolsLocation' in [PCSroot]/python/common/core/globalVariables.py to loc
 [PCSroot] chosen above.
 
 
-B. Set PYTHONPATH environment variable to [PCSroot]/python
-	i. if in OSX, modify ~/.profile:
-
-		PYTHONPATH="${PYTHONPATH}:/path/to/some/cool/python/package/:/path/to/another/cool/python/package/"
-		export PYTHONPATH
-
-
-
 
 --------------- MotionBuilder hook-up ---------------
 
@@ -40,13 +32,16 @@ A. Copy userSetup.mel from
 	[PCSroot]/maya/mel/userSetup.mel
 	
 	to maya scripts folder:
-	C:\Users\[username]\Documents\maya\2012-x64\scripts\userSetup.mel
+	C:\Users\[username]\Documents\maya\2014-x64\scripts\userSetup.mel
 
-	Change line #2 in userSetup.mel 'mayaMenuBoothPath' and set to:
-	[PCSroot]/python/maya
+B.	Change line #2 in userSetup.mel 'mayaMenuBootPath' and set to:
+	[PCSroot]/python
+
+	Change line #3 to:
+	[PCSroot]/python/maya/
 
 B. Add this line to your Maya.env:
-	PYTHONPATH = [PCSroot]/python/maya/site-packages/pymel-1.0.3
+	PYTHONPATH = [PCSroot]/python/maya/site-packages/pymel-1.0.5
 
 --------------- Future Apps to come ---------------
 Max?

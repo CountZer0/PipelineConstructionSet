@@ -1,11 +1,10 @@
 // <Art Monkey>
+string $pythonBootPath = "C:/Users/[userName]/git/PipelineConstructionSet/python";
 string $mayaMenuBootPath = "C:/Users/[userName]/git/PipelineConstructionSet/python/maya";
-
-// and in OSX add "/Users/[userName]/git/PipelineConstructionSet/python" because .profile env var will not take
-//string $pythonPath = "/Users/[userName]/git/PipelineConstructionSet/python";
 
 if (`filetest -d $mayaMenuBootPath`){
 	python("import sys;sys.path.append('" + $mayaMenuBootPath + "')");
+	python("sys.path.append('" + $pythonBootPath + "')");
 	python("from pymel.core import *");
 	python("import core.sysGlobalMenu");
 	python("core.sysGlobalMenu.MayaMenu().startUp()");
