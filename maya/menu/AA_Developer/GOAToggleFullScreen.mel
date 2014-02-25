@@ -1,0 +1,156 @@
+/*  This file downloaded from Highend3d.com
+''  
+''  Highend3d.com File Information:
+''  
+''    Script Name: GOAToggleFullScreen v1.4
+''    Author: Simon Polz
+''    Last Updated: April 10, 2003
+''    Update/Change this file at:
+''    http://www.highend3d.com/maya/mel/?section=interface#1795
+''  
+''  Please do not alter any information above this line
+''  it is generated dynamically by Highend3d.com and will
+''  be changed automatically on any updates.
+*/
+
+/* ToggleFullScreen V1.4 Copyleft by Simon Polz (godonacid@chello.at)
+
+Description:
+Use Ctrl + Space to toggle between full screen and restored screen mode.
+
+Setup:
+1. Copy the mel file to your scripts directory (e.g. C:\Documents and Settings\[username]\My Documents\maya\scripts\).
+3. By default menu bars are hidden in full mode. If you want them to remain visible browse a little down the script and uncomment the line between the lines of stars.
+2. Source it (Script Editor->File->Source File...). This will set up the hotkey Ctrl-Space (if available) to hide and restore the UI.
+3. Done. Use Ctrl-Space to toggle the visibility of the UI elements.
+4. If the hotkey Ctrl-Space was not available at installation set up a hotkey and let it execute the procedure GOAToggleFullScreen.
+
+Changes:
+V1.1: UI elements are automatically restored before Maya exits. Your UI elements configuration won't be lost if you quit the application with hidden UI elements.
+V1.2: Fixed for Maya 4.5.
+V1.3: Hides and restores menu bars. (This behaviour can be turned off. See "Setup".)
+V1.4: Just a little fix. If the previous version worked for you there is no need to update.
+*/
+
+// global variable to store state
+
+global int $GOAIsFullScreen; // state variable
+global int $GOAPanelMenuBarVisible; // state variable
+global int $GOAMainMenuBarVisible; // state variable
+
+proc HKeyAssign() {
+  string $check = `hotkeyCheck -key "Space" -ctl`;
+  if ($check=="")
+  {
+    nameCommand -annotation "Toggles visibility of UI elements" -command "GOAToggleFullScreen" GOA_TFS;
+    hotkey -ctl -k "Space" -name "GOA_TFS";
+    print("\nGOAToggleFullScreen V1.4: Hotkey registered. Use Ctrl-Space to toggle the visibility of your UI elements.\n");
+  } 
+  else 
+  {
+    print("\nGOAToggleFullScreen V1.4: Hotkey Ctrl-Space is not available. Please set up a hotkey manually and let it call the procedure GOAToggleFullScreen().\n");
+  }
+}
+
+// toggles the visiblity of the UI elements
+global proc GOAToggleFullScreen() {
+	
+  global int $GOAIsFullScreen;
+  global int $GOAPanelMenuBarVisible;
+  global int $GOAMainMenuBarVisible;
+
+  int $GOAHideMenuBars = 1; // default behaviour is to hide menu bars in full screen mode
+
+  // >*************************************************************************
+  // >*************************************************************************
+  // >*************************************************************************
+
+  //$GOAHideMenuBars = 0; // uncomment this line if you want your menu bars to remain visible in full screen mode (remove double slashes at the beginning of the line)
+
+  // <*************************************************************************
+  // <*************************************************************************
+  // <*************************************************************************
+
+  if ($GOAIsFullScreen == 0) // Initialize
+  {
+    // We restore the UI elements and then hide them.
+
+    // restore UI elements
+    RestoreUIElements;
+
+    // hide UI elements
+    HideUIElements;
+
+    // query menu bar visiblity properties
+    $GOAPanelMenuBarVisible = `optionVar -q allowMenusInPanels`;
+    $GOAMainMenuBarVisible = `optionVar -q mainWindowMenubarVis`;
+    if ($GOAHideMenuBars) { // hide menu bars if the hide menu bars flag is true
+      if ($GOAPanelMenuBarVisible) {toggleMenuBarsInAllPanels 0;}
+      if ($GOAMainMenuBarVisible) {setMainMenubarVisible 0;}
+    }
+
+    // set UI status to "hidden"
+    $GOAIsFullScreen = 1; 
+
+    // register script job which will restore the UI before the application exits
+    scriptJob -e "quitApplication" GOAToggleFullScreenCleanUp;
+  }
+  else if ($GOAIsFullScreen == 1) // UI is hidden, restore UI
+  {
+    // restore UI elements
+    RestoreUIElements;
+
+    // restore menu bars to saved status
+    if ($GOAPanelMenuBarVisible) {toggleMenuBarsInAllPanels 1;}
+    if ($GOAMainMenuBarVisible) {setMainMenubarVisible 1;}
+
+    // set UI status to "restored"
+    $GOAIsFullScreen = 2;
+  }
+  else if ($GOAIsFullScreen == 2) // UI is restored, hide UI
+  {
+    // hide UI elements
+    HideUIElements;
+
+    // query menu bar visiblity properties
+    $GOAPanelMenuBarVisible = `optionVar -q allowMenusInPanels`;
+    $GOAMainMenuBarVisible = `optionVar -q mainWindowMenubarVis`;
+    if ($GOAHideMenuBars) { // hide menu bars if the hide menu bars flag is true
+      if ($GOAPanelMenuBarVisible) {toggleMenuBarsInAllPanels 0;}
+      if ($GOAMainMenuBarVisible) {setMainMenubarVisible 0;}
+    }
+
+    // set UI status to "hidden"
+    $GOAIsFullScreen = 1;
+  }
+}
+
+// Restore the UI configuration before maya exits.
+global proc GOAToggleFullScreenCleanUp() {
+
+  global int $GOAIsFullScreen;
+  global int $GOAPanelMenuBarVisible;
+  global int $GOAMainMenuBarVisible;
+
+  if ($GOAIsFullScreen == 1) // UI is hidden, restore UI
+  {
+    // restore UI elements
+    RestoreUIElements;
+
+    if ($GOAPanelMenuBarVisible) {toggleMenuBarsInAllPanels 1;}
+    if ($GOAMainMenuBarVisible) {setMainMenubarVisible 1;}
+
+    // set UI status to "restored"
+    $GOAIsFullScreen = 2;
+
+    // without this the restored UI configuration does not get saved
+    savePrefs -g;
+  }
+}
+
+// when sourced hook up the hotkey
+//HKeyAssign();
+
+global proc InstallGOAToggleFullScreen(){
+	HKeyAssign();
+}

@@ -1,0 +1,274 @@
+//-----------------------------------------------------------------//
+//	SCRIPT:	jpInstallFastUI.mel
+//	AUTHOR:	Jason Parks
+//					jason@jason-parks.com
+//	DATE:	April 11, 2003
+//
+//	DESCRIPTION:	Installs hotkeys for fast UI toggles
+//
+//-----------------------------------------------------------------//
+
+global proc jpInstallFastUI ()
+{
+	
+	//install FullScreen Toggle
+	//source "menu/AA_Developer/GOAToggleFullScreen.mel";
+	//source "GOAToggleFullScreen.mel";
+	//InstallGOAToggleFullScreen();
+	
+	
+	//map window toggle hotkeys
+	
+	nameCommand -ann "Toggle ToolBox" -c "ToggleToolbox" jpToggleToolbox;
+	hotkey -k "`" -ctl -name "jpToggleToolbox";
+	
+	nameCommand -ann "Toggle StatusLine" -c "ToggleStatusLine" jpToggleStatusLine;
+	hotkey -k "1" -ctl -name "jpToggleStatusLine";
+	
+	nameCommand -ann "Toggle Shelf" -c "ToggleShelf" jpToggleShelf;
+	hotkey -k "2" -ctl -name "jpToggleShelf";
+	
+	nameCommand -ann "Toggle TimeSlider" -c "ToggleTimeSlider" jpToggleTimeSlider;
+	hotkey -k "3" -ctl -name "jpToggleTimeSlider";
+	
+	nameCommand -ann "Toggle RangeSlider" -c "ToggleRangeSlider" jpToggleRangeSlider;
+	hotkey -k "4" -ctl -name "jpToggleRangeSlider";
+	
+	nameCommand -ann "Toggle CommandLine" -c "ToggleCommandLine" jpToggleCommandLine;
+	hotkey -k "5" -ctl -name "jpToggleCommandLine";
+	
+	nameCommand -ann "Toggle HelpLine" -c "ToggleHelpLine" jpToggleHelpLine;
+	hotkey -k "6" -ctl -name "jpToggleHelpLine";
+	
+	nameCommand -ann "Toggle ChannelsLayers" -c "ToggleChannelsLayers" jpToggleChannelsLayers;
+	hotkey -k "7" -ctl -name "jpToggleChannelsLayers";
+	
+	nameCommand -ann "Hide UIElements" -c "HideUIElements" jpHideUIElements;
+	hotkey -k "8" -ctl -name "jpHideUIElements";
+	
+	nameCommand -ann "Show UIElements" -c "ShowUIElements" jpShowUIElements;
+	hotkey -k "9" -ctl -name "jpShowUIElements";
+	
+	nameCommand -ann "Restore UIElements" -c "RestoreUIElements" jpRestoreUIElements;
+	hotkey -k "0" -ctl -name "jpRestoreUIElements";
+
+	//map joint size hotkeys
+	
+	nameCommand -ann "JointSize0_02" -c "jointDisplayScale 0.02" jpJointSize_0_02;
+	hotkey -k "1" -alt -name "jpJointSize_0_02";
+	
+	nameCommand -ann "JointSize0_1" -c "jointDisplayScale 0.1" jpJointSize_0_1;
+	hotkey -k "2" -alt -name "jpJointSize_0_1";
+	
+	nameCommand -ann "JointSize0_25" -c "jointDisplayScale 0.25" jpJointSize_0_25;
+	hotkey -k "3" -alt -name "jpJointSize_0_25";
+	
+	nameCommand -ann "JointSize0_5" -c "jointDisplayScale 0.5" jpJointSize_0_5;
+	hotkey -k "4" -alt -name "jpJointSize_0_5";
+	
+	nameCommand -ann "JointSize1" -c "jointDisplayScale 1.0" jpJointSize_1;
+	hotkey -k "5" -alt -name "jpJointSize_1";
+	
+	nameCommand -ann "JointSize2" -c "jointDisplayScale 2.0" jpJointSize_2;
+	hotkey -k "6" -alt -name "jpJointSize_2";
+	
+	nameCommand -ann "JointSize5" -c "jointDisplayScale 5.0" jpJointSize_5;
+	hotkey -k "7" -alt -name "jpJointSize_5";
+	
+	nameCommand -ann "JointSize10" -c "jointDisplayScale 10.0" jpJointSize_10;
+	hotkey -k "8" -alt -name "jpJointSize_10";
+	
+	nameCommand -ann "JointSize20" -c "jointDisplayScale 20.0" jpJointSize_20;
+	hotkey -k "9" -alt -name "jpJointSize_20";
+	
+	//map showInWindow hotkeys
+	jpCustomRunTimes;
+	
+	nameCommand -ann "Xray_ToggleNameCommand" -c "Xray_Toggle" Xray_ToggleNameCommand;
+	hotkey -k "x" -ctl -name "Xray_ToggleNameCommand";
+	
+	nameCommand -ann "Joints_ToggleNameCommand" -c "Joints_Toggle" Joints_ToggleNameCommand;
+	hotkey -k "j" -ctl -name "Joints_ToggleNameCommand";
+	
+	nameCommand -ann "WireFrame_ToggleNameCommand" -c "WireFrame_Toggle" WireFrame_ToggleNameCommand;
+	hotkey -k "W" -ctl -name "WireFrame_ToggleNameCommand";
+	
+	nameCommand -ann "Poly_ToggleNameCommand" -c "Poly_Toggle" Poly_ToggleNameCommand;
+	hotkey -k "p" -ctl -name "Poly_ToggleNameCommand";
+	
+	nameCommand -ann "NurbS_ToggleNameCommand" -c "NurbS_Toggle" NurbS_ToggleNameCommand;
+	hotkey -k "n" -ctl -name "NurbS_ToggleNameCommand";
+	
+	nameCommand -ann "NurbC_ToggleNameCommand" -c "NurbC_Toggle" NurbC_ToggleNameCommand;
+	hotkey -k "c" -ctl -name "NurbC_ToggleNameCommand";
+	
+	nameCommand -ann "SubD_ToggleNameCommand" -c "SubD_Toggle" SubD_ToggleNameCommand;
+	hotkey -k "s" -ctl -name "SubD_ToggleNameCommand";
+	
+	nameCommand -ann "Lights_ToggleNameCommand" -c "Lights_Toggle" Lights_ToggleNameCommand;
+	hotkey -k "l" -ctl -name "Lights_ToggleNameCommand";
+	
+	nameCommand -ann "Cameras_ToggleNameCommand" -c "Cameras_Toggle" Cameras_ToggleNameCommand;
+	hotkey -k "r" -ctl -name "Cameras_ToggleNameCommand";
+	
+	nameCommand -ann "Deformers_ToggleNameCommand" -c "Deformers_Toggle" Deformers_ToggleNameCommand;
+	hotkey -k "D" -ctl -name "Deformers_ToggleNameCommand";
+	
+	nameCommand -ann "IKHandle_ToggleNameCommand" -c "IKHandle_Toggle" IKHandle_ToggleNameCommand;
+	hotkey -k "i" -ctl -name "IKHandle_ToggleNameCommand";
+	
+	nameCommand -ann "Texture_ToggleNameCommand" -c "Texture_Toggle" Texture_ToggleNameCommand;
+	hotkey -k "t" -ctl -name "Texture_ToggleNameCommand";
+	
+	nameCommand -ann "Locator_ToggleNameCommand" -c "Locator_Toggle" Locator_ToggleNameCommand;
+	hotkey -k "L" -ctl -name "Locator_ToggleNameCommand";
+	
+	nameCommand -ann "Handle_ToggleNameCommand" -c "Handle_Toggle" Handle_ToggleNameCommand;
+	hotkey -k "h" -ctl -alt -name "Handle_ToggleNameCommand";
+	
+	nameCommand -ann "Grid_ToggleNameCommand" -c "Grid_Toggle" Grid_ToggleNameCommand;
+	hotkey -k "G" -ctl -name "Grid_ToggleNameCommand";
+	
+	print "Hotkeys mapped.";	
+}
+
+global proc jpCustomRunTimes()
+{
+	if (!`runTimeCommand -ex Xray_Toggle`)
+	{
+		runTimeCommand
+		-annotation "Toggles X-ray shaded mode on and off"
+		-category "User"
+		-command ("//by J.Parks - Jason.Parks@thq.com\r\nif (`getPanel -to (eval(\"getPanel -withFocus\"))`) \r\n{ \r\n$currentPanel = `getPanel -withFocus`; \r\nif (`modelEditor -q -xray $currentPanel`) \r\n{ \r\nmodelEditor -edit -xray 0 $currentPanel; \r\n} \r\nelse \r\n{ \r\nmodelEditor -edit -xray 1 $currentPanel; \r\n} \r\n};")
+		Xray_Toggle;
+	}
+	
+	if (!`runTimeCommand -ex Joints_Toggle`)
+	{
+		runTimeCommand
+		-annotation "Toggles joint display on and off"
+		-category "User"
+		-command ("//by J.Parks - Jason.Parks@thq.com\r\nif (`getPanel -to (eval(\"getPanel -withFocus\"))`) \r\n{ \r\n$currentPanel = `getPanel -withFocus`; \r\nif (`modelEditor -q -joints $currentPanel`) \r\n{ \r\nmodelEditor -edit -joints 0 $currentPanel; \r\n} \r\nelse \r\n{ \r\nmodelEditor -edit -joints 1 $currentPanel; \r\n} \r\n};")
+		Joints_Toggle;
+	}
+	
+	if (!`runTimeCommand -ex WireFrame_Toggle`)
+	{
+		runTimeCommand
+		-annotation "Toggles WireFrameOnShaded on and off"
+		-category "User"
+		-command ("//by J.Parks - Jason.Parks@thq.com\r\nif (`getPanel -to (eval(\"getPanel -withFocus\"))`) \r\n{ \r\n$currentPanel = `getPanel -withFocus`; \r\nif (`modelEditor -q -wos $currentPanel`) \r\n{ \r\nmodelEditor -edit -wos 0 $currentPanel; \r\n} \r\nelse \r\n{ \r\nmodelEditor -edit -wos 1 $currentPanel; \r\n} \r\n};")
+		WireFrame_Toggle;
+	}
+	
+	if (!`runTimeCommand -ex Poly_Toggle`)
+	{
+		runTimeCommand
+		-annotation "Toggles Polygon display on and off"
+		-category "User"
+		-command ("//by J.Parks - Jason.Parks@thq.com\r\nif (`getPanel -to (eval(\"getPanel -withFocus\"))`) \r\n{ \r\n$currentPanel = `getPanel -withFocus`; \r\nif (`modelEditor -q -polymeshes $currentPanel`) \r\n{ \r\nmodelEditor -edit -polymeshes 0 $currentPanel; \r\n} \r\nelse \r\n{ \r\nmodelEditor -edit -polymeshes 1 $currentPanel; \r\n} \r\n};")
+		Poly_Toggle;
+	}
+	
+	if (!`runTimeCommand -ex NurbS_Toggle`)
+	{
+		runTimeCommand
+		-annotation "Toggles NurbSurface display on and off"
+		-category "User"
+		-command ("//by J.Parks - Jason.Parks@thq.com\r\nif (`getPanel -to (eval(\"getPanel -withFocus\"))`) \r\n{ \r\n$currentPanel = `getPanel -withFocus`; \r\nif (`modelEditor -q -nurbsSurfaces $currentPanel`) \r\n{ \r\nmodelEditor -edit -nurbsSurfaces 0 $currentPanel; \r\n} \r\nelse \r\n{ \r\nmodelEditor -edit -nurbsSurfaces 1 $currentPanel; \r\n} \r\n};")
+		NurbS_Toggle;
+	}
+	
+	if (!`runTimeCommand -ex NurbC_Toggle`)
+	{
+		runTimeCommand
+		-annotation "Toggles NurbCurve display on and off"
+		-category "User"
+		-command ("//by J.Parks - Jason.Parks@thq.com\r\nif (`getPanel -to (eval(\"getPanel -withFocus\"))`) \r\n{ \r\n$currentPanel = `getPanel -withFocus`; \r\nif (`modelEditor -q -nurbsCurves $currentPanel`) \r\n{ \r\nmodelEditor -edit -nurbsCurves 0 $currentPanel; \r\n} \r\nelse \r\n{ \r\nmodelEditor -edit -nurbsCurves 1 $currentPanel; \r\n} \r\n};")
+		NurbC_Toggle;
+	}
+	
+	if (!`runTimeCommand -ex SubD_Toggle`)
+	{		
+		runTimeCommand
+		-annotation "Toggles SubDivisionSurface display on and off"
+		-category "User"
+		-command ("//by J.Parks - Jason.Parks@thq.com\r\nif (`getPanel -to (eval(\"getPanel -withFocus\"))`) \r\n{ \r\n$currentPanel = `getPanel -withFocus`; \r\nif (`modelEditor -q -subdivSurfaces $currentPanel`) \r\n{ \r\nmodelEditor -edit -subdivSurfaces 0 $currentPanel; \r\n} \r\nelse \r\n{ \r\nmodelEditor -edit -subdivSurfaces 1 $currentPanel; \r\n} \r\n};")
+		SubD_Toggle;
+	}
+	
+	if (!`runTimeCommand -ex Lights_Toggle`)
+	{	
+		runTimeCommand
+		-annotation "Toggles Light display on and off"
+		-category "User"
+		-command ("//by J.Parks - Jason.Parks@thq.com\r\nif (`getPanel -to (eval(\"getPanel -withFocus\"))`) \r\n{ \r\n$currentPanel = `getPanel -withFocus`; \r\nif (`modelEditor -q -lights $currentPanel`) \r\n{ \r\nmodelEditor -edit -lights 0 $currentPanel; \r\n} \r\nelse \r\n{ \r\nmodelEditor -edit -lights 1 $currentPanel; \r\n} \r\n};")
+		Lights_Toggle;
+	}
+	
+	if (!`runTimeCommand -ex Cameras_Toggle`)
+	{	
+		runTimeCommand
+		-annotation "Toggles Camera display on and off"
+		-category "User"
+		-command ("//by J.Parks - Jason.Parks@thq.com\r\nif (`getPanel -to (eval(\"getPanel -withFocus\"))`) \r\n{ \r\n$currentPanel = `getPanel -withFocus`; \r\nif (`modelEditor -q -cameras $currentPanel`) \r\n{ \r\nmodelEditor -edit -cameras 0 $currentPanel; \r\n} \r\nelse \r\n{ \r\nmodelEditor -edit -cameras 1 $currentPanel; \r\n} \r\n};")
+		Cameras_Toggle;
+	}
+	
+	if (!`runTimeCommand -ex Deformers_Toggle`)
+	{
+		runTimeCommand
+		-annotation "Toggles Deformer display on and off"
+		-category "User"
+		-command ("//by J.Parks - Jason.Parks@thq.com\r\nif (`getPanel -to (eval(\"getPanel -withFocus\"))`) \r\n{ \r\n$currentPanel = `getPanel -withFocus`; \r\nif (`modelEditor -q -deformers $currentPanel`) \r\n{ \r\nmodelEditor -edit -deformers 0 $currentPanel; \r\n} \r\nelse \r\n{ \r\nmodelEditor -edit -deformers 1 $currentPanel; \r\n} \r\n};")
+		Deformers_Toggle;
+	}
+	
+	if (!`runTimeCommand -ex IKHandle_Toggle`)
+	{
+		runTimeCommand
+		-annotation "Toggles IKHandle visibility on and off"
+		-category "User"
+		-command ("//by J.Parks - Jason.Parks@thq.com\r\nif (`getPanel -to (eval(\"getPanel -withFocus\"))`) \r\n{ \r\n$currentPanel = `getPanel -withFocus`; \r\nif (`modelEditor -q -ikHandles $currentPanel`) \r\n{ \r\nmodelEditor -edit -ikHandles 0 $currentPanel; \r\n} \r\nelse \r\n{ \r\nmodelEditor -edit -ikHandles 1 $currentPanel; \r\n} \r\n};")
+		IKHandle_Toggle;
+	}
+	
+	if (!`runTimeCommand -ex Texture_Toggle`)
+	{
+		runTimeCommand
+		-annotation "Toggles Texture display on and off"
+		-category "User"
+		-command ("//by J.Parks - Jason.Parks@thq.com\r\nif (`getPanel -to (eval(\"getPanel -withFocus\"))`) \r\n{ \r\n$currentPanel = `getPanel -withFocus`; \r\nif (`modelEditor -q -textures $currentPanel`) \r\n{ \r\nmodelEditor -edit -textures 0 $currentPanel; \r\n} \r\nelse \r\n{ \r\nmodelEditor -edit -textures 1 $currentPanel; \r\n} \r\n};")
+		Texture_Toggle;
+	}
+	
+	if (!`runTimeCommand -ex Locator_Toggle`)
+	{
+		runTimeCommand
+		-annotation "Toggles Locator visibility on and off"
+		-category "User"
+		-command ("//by J.Parks - Jason.Parks@thq.com\r\nif (`getPanel -to (eval(\"getPanel -withFocus\"))`) \r\n{ \r\n$currentPanel = `getPanel -withFocus`; \r\nif (`modelEditor -q -locators $currentPanel`) \r\n{ \r\nmodelEditor -edit -locators 0 $currentPanel; \r\n} \r\nelse \r\n{ \r\nmodelEditor -edit -locators 1 $currentPanel; \r\n} \r\n};\r\n")
+		Locator_Toggle;
+	}
+	
+	if (!`runTimeCommand -ex Handle_Toggle`)
+	{
+		runTimeCommand
+		-annotation "Toggles Handle visibility on and off"
+		-category "User"
+		-command ("//by J.Parks - Jason.Parks@thq.com\r\nif (`getPanel -to (eval(\"getPanel -withFocus\"))`) \r\n{ \r\n$currentPanel = `getPanel -withFocus`; \r\nif (`modelEditor -q -handles $currentPanel`) \r\n{ \r\nmodelEditor -edit -handles 0 $currentPanel; \r\n} \r\nelse \r\n{ \r\nmodelEditor -edit -handles 1 $currentPanel; \r\n} \r\n};\r\n")
+		Handle_Toggle;
+	}
+	
+	if (!`runTimeCommand -ex Grid_Toggle`)
+	{
+		runTimeCommand
+		-annotation "Toggles Visibility of Grid on and off"
+		-category "User"
+		-command ("//by J.Parks - Jason.Parks@thq.com\r\nif (`getPanel -to (eval(\"getPanel -withFocus\"))`) \r\n{ \r\n$currentPanel = `getPanel -withFocus`; \r\nif (`modelEditor -q -grid $currentPanel`) \r\n{ \r\nmodelEditor -edit -grid 0 $currentPanel; \r\n} \r\nelse \r\n{ \r\nmodelEditor -edit -grid 1 $currentPanel; \r\n} \r\n};")
+		Grid_Toggle;
+	}
+}
+
+//when sourced, run
+jpInstallFastUI;
