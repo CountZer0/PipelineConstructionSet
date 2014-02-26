@@ -114,14 +114,14 @@ class MayaMenu(object):
             mVer = mVer.split(' ')[0]
             putEnv("MAYA_PLUG_IN_PATH", [getEnv('MAYA_PLUG_IN_PATH'), '%s/plugins/%s/win64' % (self.PCSmenuPath, mVer),
                                          '%s/plugins/%s/win64/others' % (self.PCSmenuPath, mVer)])
-            sys.path.append('%s/python/common/pyQt/PyQt4/2012/win64' % self.PCStoolsLocation)
+            # sys.path.append('%s/python/common/pyQt/PyQt4/2012/win64' % self.PCStoolsLocation)
         else:
             putEnv("MAYA_PLUG_IN_PATH", [getEnv('MAYA_PLUG_IN_PATH'), '%s/plugins/%s/win32' % (self.PCSmenuPath, mVer),
                                          '%s/plugins/%s/win32/others' % (self.PCSmenuPath, mVer)])
-            sys.path.append('%s/python/common/pyQt/PyQt4/2012/win32' % self.PCStoolsLocation)
-        # Add extraScripts/include folder
-        putEnv("MAYA_SCRIPT_PATH",
-               [getEnv('MAYA_SCRIPT_PATH'), '%s/extraScripts/include/%s' % (self.PCSmenuPath, mVer)])
+            # sys.path.append('%s/python/common/pyQt/PyQt4/2012/win32' % self.PCStoolsLocation)
+        # # Add extraScripts/include folder
+        # putEnv("MAYA_SCRIPT_PATH",
+        #        [getEnv('MAYA_SCRIPT_PATH'), '%s/extraScripts/include/%s' % (self.PCSmenuPath, mVer)])
 
     def startUp(self):
         """ Menu Start Up Command """

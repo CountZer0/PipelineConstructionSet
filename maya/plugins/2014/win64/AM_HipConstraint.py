@@ -48,8 +48,8 @@ kVersionNumber = '1.04'
 # ----------------------------------------------------------------
 class AM_HipConstraintCmd(OMMPx.MPxCommand):
     """
-	A command to quickly create, edit, or query an am_hipConstraint node.
-	"""
+    A command to quickly create, edit, or query an am_hipConstraint node.
+    """
 
     ## the name of the command
     kPluginCmdName = 'am_hipConstraint'
@@ -395,40 +395,40 @@ class AM_HipConstraintCmd(OMMPx.MPxCommand):
 # ----------------------------------------------------------------
 class AM_HipConstraintNode(OMMPx.MPxNode):
     """
-	A node to constrain the first twist joint in a hip. The node also outputs
-	the hip's pelvis-space elevation angle for other nodes to use.
-	\par Input Attributes:
-		- \em rotateOrder: The rotateOrder attribute of the constrained object.
-		- \em hipAimAxis: Axis in the upper leg's local space that aims toward
-			the knee joint.
-		- \em hipFrontAxis: Axis in the upper leg's local space that points
-			toward the character's front.
-		- \em pelvisAimAxis: Axis in the specified pelvis joint's local space
-			that aims toward the next vertebra (up).
-		- \em pelvisFrontAxis: Axis in the specified pelvis joint's local space
-			that aims toward the character's front.
-		- \em rotatePivot: The rotatePivot attribute of the upper leg.
-		- \em jointOrient: The jointOrient attribute of the constrained object
-			if it is a joint. If there is no connection (i.e., the constrained
-			object is not a joint), then it is initialized to identity and has
-			no effect.
-		- \em pelvisWorldMatrix: The worldMatrix attribute of the object to use
-			for computing the hip's elevation angle. The hip constraint is
-			designed with the expectation that this is the the first common
-			parent of both of the upper legs (usually the ribcage). Although
-			this joint will produce perfectly valid values if any intermediate
-			joints exist (collar bone, scapula), such an intermediate joint
-			could be used instead, provided that the axes given for the pelvis
-			node (above) are transformed into the intermediate joint's local
-			space.
-		- \em hipWorldMatrix: The worldMatrix attribute of the upper leg object
-			along whose aim axis (above) the constrained object is twisting.
-		- \em parentInverseMatrix: The parentInverseMatrix attribute of the
-			constrained object.
-	\par Output Attributes:
-		- \em rotate: The local Euler rotation piped to the constrained object.
-		- \em elevationAngle: The elevation angle of the hip in pelvis space.
-	"""
+    A node to constrain the first twist joint in a hip. The node also outputs
+    the hip's pelvis-space elevation angle for other nodes to use.
+    \par Input Attributes:
+        - \em rotateOrder: The rotateOrder attribute of the constrained object.
+        - \em hipAimAxis: Axis in the upper leg's local space that aims toward
+            the knee joint.
+        - \em hipFrontAxis: Axis in the upper leg's local space that points
+            toward the character's front.
+        - \em pelvisAimAxis: Axis in the specified pelvis joint's local space
+            that aims toward the next vertebra (up).
+        - \em pelvisFrontAxis: Axis in the specified pelvis joint's local space
+            that aims toward the character's front.
+        - \em rotatePivot: The rotatePivot attribute of the upper leg.
+        - \em jointOrient: The jointOrient attribute of the constrained object
+            if it is a joint. If there is no connection (i.e., the constrained
+            object is not a joint), then it is initialized to identity and has
+            no effect.
+        - \em pelvisWorldMatrix: The worldMatrix attribute of the object to use
+            for computing the hip's elevation angle. The hip constraint is
+            designed with the expectation that this is the the first common
+            parent of both of the upper legs (usually the ribcage). Although
+            this joint will produce perfectly valid values if any intermediate
+            joints exist (collar bone, scapula), such an intermediate joint
+            could be used instead, provided that the axes given for the pelvis
+            node (above) are transformed into the intermediate joint's local
+            space.
+        - \em hipWorldMatrix: The worldMatrix attribute of the upper leg object
+            along whose aim axis (above) the constrained object is twisting.
+        - \em parentInverseMatrix: The parentInverseMatrix attribute of the
+            constrained object.
+    \par Output Attributes:
+        - \em rotate: The local Euler rotation piped to the constrained object.
+        - \em elevationAngle: The elevation angle of the hip in pelvis space.
+    """
 
     ## the name of the nodeType
     kPluginNodeTypeName = 'am_hipConstraint'
@@ -619,6 +619,7 @@ class AM_HipConstraintNode(OMMPx.MPxNode):
     def nodeCreator(cls):
         return OMMPx.asMPxPtr(cls())
 
+    # noinspection PyCallByClass
     @classmethod
     def nodeInitializer(cls):
         # ----------------------------------------------------------------
