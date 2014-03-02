@@ -43,6 +43,9 @@ B.	Change line #2 in userSetup.mel 'mayaMenuBootPath' and set to:
 C. Add this line to your Maya.env:
 	PYTHONPATH = [PCSroot]/python/maya/site-packages/pymel-1.0.5
 
+	You may have to copy pymel-1.0.5/pymel/cache/. zip files from your local install
+	to a similar directory in the above location
+
 --------------- Future Apps to come ---------------
 Max?
 Unity?
