@@ -356,68 +356,6 @@ class MayaMenu(object):
         self.PCSMenu_build()
         self.log.info('Menu Refreshed')
 
-    # def PCSActiveTeam_change(self, *args):
-    #     """ Edit the active team globally """
-    #     self.log.info('Executing Change Active Team')
-    #     changeTeam = args[0][0]
-    #     itemArray = args[0][1]
-    #     value = args[1]
-    #     if not changeTeam == self.PCSactiveTeam:
-    #         for itm in itemArray:
-    #             cVal = 0
-    #             if re.search(changeTeam, itm.name()):
-    #                 if value:
-    #                     cVal = 1
-    #                     self.userXMLCore.set('PCSactiveTeam', changeTeam)
-    #                     self.PCSactiveTeam = changeTeam
-    #                     if self.PCSactiveTeam in self.PCSEngineTeams:
-    #                         self.userXMLCore.set('PCSmyEngine', '1')
-    #                         self.PCSmyEngine = 1
-    #                         melGlobals['PCSmyEngine'] = self.PCSmyEngine
-    #                     self.userXML.write('%s/data/%s/PCS.xml' % (self.PCSlogLocation, self.userName))
-    #                     self.log.debug('userXML written')
-    #                     # Handle overload source and save intercept source
-    #                     # See if the teamXML is present
-    #                     if os.path.exists('%s/installData/%sTB.XML' % (gv.toolsLocation, changeTeam)):
-    #                         self.log.debug('Path exists - %s/installData/%sTB.XML' % (gv.toolsLocation, changeTeam))
-    #                         teamXML = ET.parse('%s/installData/%sTB.XML' % (gv.toolsLocation, changeTeam))
-    #                         teamXMLCore = teamXML.getiterator('Core')[0]
-    #                         lookPath = '%s/extraScripts' % teamXMLCore.get('teamTBRoot')
-    #                         self.log.debug('Look path set to - %s' % lookPath)
-    #                         #							pPath = parser_PCS.ParsePCS().userGet('PCSprojectToolPath')
-    #                         pPath = gv.toolsLocation
-    #                         if os.path.exists('%s/teamSave.mel' % lookPath):
-    #                             self.log.debug('teamSave found - %s/teamSave.mel' % lookPath)
-    #                             mel.eval('source "%s/maya/mel/overload/saveOverload_%s.mel"' % (
-    #                                 pPath, about(version=1).split(' ')[0]))
-    #                             mel.eval('source "%s/teamSave.mel"' % lookPath)
-    #                         else:
-    #                             # Source the original autodesk procs
-    #                             mel.eval(
-    #                                 'source "%s/scripts/others/pv_performAction.mel"' % mel.getenv('MAYA_LOCATION'))
-    #                             mel.eval('source "%s/scripts/startup/FileMenu.mel"' % mel.getenv('MAYA_LOCATION'))
-    #                         # Team Scene
-    #                         if os.path.exists('%s/teamScene.mel' % lookPath):
-    #                             mel.eval('source "%s/teamScene.mel"' % lookPath)
-    #                         else:
-    #                             for sj in scriptJob(listJobs=True):
-    #                                 if re.search('teamScene', sj):
-    #                                     jNumb = int(sj.split(':')[0])
-    #                                     scriptJob(kill=jNumb, force=True)
-    #                     else:
-    #                         self.log.debug('Team install data not present - %s/installData/%sTB.XML' % (
-    #                             gv.toolsLocation, changeTeam))
-    #                 else:
-    #                     cVal = 0
-    #             menuItem(itm, e=1, checkBox=cVal)  #@UndefinedVariable
-    #         self.log.info('Active team changed to: %s' % self.PCSactiveTeam)
-    #     # Reset the active team to on
-    #     else:
-    #         for itm in itemArray:
-    #             if re.search(changeTeam, itm.name()):
-    #                 menuItem(itm, e=1, checkBox=1)  #@UndefinedVariable
-    #         self.log.info('Active team is the same: %s' % self.PCSactiveTeam)
-
 
 def tempFunc():
     pass
