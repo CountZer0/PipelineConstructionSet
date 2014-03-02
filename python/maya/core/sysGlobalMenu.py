@@ -5,7 +5,6 @@ Module: maya.core.sysGlobalMenu
 Purpose: Art Menu global class
 """
 
-#from functools import partial
 from pymel.all import *  # @UnusedWildImport
 from pymel.util import *  # @UnusedWildImport
 from re import search  # @Reimport
@@ -21,6 +20,7 @@ import xml.etree.ElementTree as ET
 # Do NOT import ANYTHING that is under PCS GLOBAL CODE REPOSITORY here, DO your IMPORTS on the BOTTOM 
 
 
+# noinspection PyUnresolvedReferences
 class MayaMenu(object):
     """
     SYNOPSIS
@@ -110,7 +110,8 @@ class MayaMenu(object):
         # in early enough
 
         mVer = about(version=1)
-        if search('x64', mVer):
+        # if search('x64', mVer):
+        if about(win64=1):
             mVer = mVer.split(' ')[0]
             putEnv("MAYA_PLUG_IN_PATH", [getEnv('MAYA_PLUG_IN_PATH'), '%s/plugins/%s/win64' % (self.PCSmenuPath, mVer),
                                          '%s/plugins/%s/win64/others' % (self.PCSmenuPath, mVer)])
@@ -221,10 +222,10 @@ class MayaMenu(object):
         """ Clean out run time commands """
 
         searchPadding = self.PCStPad
-        for e in runTimeCommand(q=1, userCommandArray=1):  # @UndefinedVariable
-            if len(e.split('_')) > 1:
-                if e.split('_')[0] == searchPadding:
-                    runTimeCommand(e, e=1, delete=1)  # @UndefinedVariable
+        for rTimeC in runTimeCommand(q=1, userCommandArray=1):  # @UndefinedVariable
+            if len(rTimeC.split('_')) > 1:
+                if rTimeC.split('_')[0] == searchPadding:
+                    runTimeCommand(rTimeC, e=1, delete=1)  # @UndefinedVariable
 
     # noinspection PyUnresolvedReferences
     def PCSMenu_build(self):
@@ -266,25 +267,25 @@ class MayaMenu(object):
         sKeys.sort()
 
         # 3. Build Sorted Menu
-        for e in sKeys:
+        for s in sKeys:
             # Store & Sort The Files
-            dictFiles = self.menuDict[e]
+            dictFiles = self.menuDict[s]
             dictFiles.sort()
             # Store the menuName
-            cMainName = e.replace(self.PCSmenuStart, self.PCStPad).replace('/', '_').replace('\\', '_')
+            cMainName = s.replace(self.PCSmenuStart, self.PCStPad).replace('/', '_').replace('\\', '_')
             # Store the menuLabel
-            if len(e.namebase.split('_')) > 1:
-                cMainLabel = e.namebase.split('_')[len(e.namebase.split('_')) - 1]
+            if len(s.namebase.split('_')) > 1:
+                cMainLabel = s.namebase.split('_')[len(s.namebase.split('_')) - 1]
             else:
-                cMainLabel = e.namebase
+                cMainLabel = s.namebase
             # Store the parent of the menu
-            cMainParent = e.dirname()
+            cMainParent = s.dirname()
             if cMainParent == self.PCSmenuStart:
                 cMainParent = self.PCSMenu
             else:
                 cMainParent = cMainParent.replace(self.PCSmenuStart, self.PCStPad).replace('/', '_')
             # Intercept Folder Divider
-            if re.search('_div', str(e)):
+            if re.search('_div', str(s)):
                 cmds.menuItem(p=cMainParent, divider=1)
             else:
                 #with subMenuItem(cMainName, parent=cMainParent, label=cMainLabel, tearOff=1, allowOptionBoxes=1):
@@ -298,7 +299,7 @@ class MayaMenu(object):
                                 # Mel file with no extension (this is a string of the mel file name)
                                 fName = dFile.split('.')[0]
                                 # Full Path to Mel File
-                                sPath = '%s/%s' % (e, fName)
+                                sPath = '%s/%s' % (s, fName)
                                 rtCommand = "mel.source('%s')\nmel.%s()" % (sPath, fName)
                                 # Make Run Time Command Name
                                 rtName = '%s_%s' % (self.PCStPad, fName)
