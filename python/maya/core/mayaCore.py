@@ -41,7 +41,6 @@ class Maya(object):
     def teamB(self):
         return gv.teamB
 
-
     def getMayaVersion(self, strVersion=0):
         """
         SYNOPSIS: Returns application version
@@ -202,7 +201,6 @@ class MayaPrintCore(Maya):
     def __init__(self):
         """ MayaPrintCore.__init__():  set initial parameters """
         super(MayaPrintCore, self).__init__()
-
 
     def debugInfo(self, loud, text, title=''):
         """
@@ -1730,7 +1728,7 @@ class MayaMeshCore(Maya):
                 offObj.getShape().opposite.set(0)
 
     @staticmethod
-    def verifyMeshSelection(all=0):  #@ReservedAssignment
+    def verifyMeshSelection(all=0):  # @ReservedAssignment
         """
         SYNOPSIS: Verifies the selection to be mesh transform
         INPUTS: all = 0 - acts only on the first selected item
