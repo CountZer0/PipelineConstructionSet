@@ -25,7 +25,7 @@ A. Open Settings -> Preferences -> Python  and specify 'Python startup folder' a
 	[PCSroot]/python/moBu/startup
 
 B. Still need to add to User or System environment variable PYTHONPATH:
-    [PCSroot/python
+    [PCSroot]/python
 
 
 
