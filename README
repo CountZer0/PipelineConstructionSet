@@ -24,6 +24,9 @@ A. Set 'toolsLocation' in [PCSroot]/python/common/core/globalVariables.py to loc
 A. Open Settings -> Preferences -> Python  and specify 'Python startup folder' as:
 	[PCSroot]/python/moBu/startup
 
+B. Still need to add to User or System environment variable PYTHONPATH:
+    [PCSroot/python
+
 
 
 --------------- Maya hook-up ---------------
