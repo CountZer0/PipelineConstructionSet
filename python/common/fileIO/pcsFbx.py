@@ -261,7 +261,31 @@ class FBX(object):
         return casted_property.Get()
 
     def make_marker(self, name):
-        #TODO:
+        """
+        Creates a marker
+
+        *Arguments:*
+            * ``name`` name of marker
+
+        *Keyword Arguments:*
+            * ``none``
+
+        *Returns:*
+            * ``node`` fbx.FbxNode
+
+        *Examples:* ::
+
+            >>> import common.fileIO.pcsFbx
+            >>> filepath = r"d:[path_to_art_asset]\test_anim.fbx"
+            >>> fbx_file = common.fileIO.pcsFbx.FBX( filepath )
+            >>> marker = fbx_file.make_marker( 'root' )
+            >>> print marker.GetName()
+            >>> fbx_file.save_scene()
+
+        *Author:*
+            * Jason.Parks, jason@continuityai.com, 5/8/14 4:22 PM
+        """
+
         lMarker = fbx.FbxMarker.Create(self.sdk_manager, name)
         lNode = fbx.FbxNode.Create(self.sdk_manager, name)
         lNode.SetNodeAttribute(lMarker)
@@ -274,6 +298,8 @@ class FBX(object):
         # add to scene
         # fbx_file.root_node.AddChild(lNode)
         self.root_node.AddChild(lNode)
+
+        return lNode
 
     def remove_namespace(self):
         """
